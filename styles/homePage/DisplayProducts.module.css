@@ -1,0 +1,26 @@
+.displayContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 20rem;
+  width: 100%;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.information {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding-left: 1rem;
+}
+
+.smallFont {
+  font-size: 12px;
+}

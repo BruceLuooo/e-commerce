@@ -1,0 +1,13 @@
+.arrow{
+  display: flex;
+  cursor: pointer;
+  width: 30px;
+  transition: 0.3s;
+}
+
+.open{
+  transform: rotate(180deg);
+}
+.close{
+  transform: rotate(0);
+}

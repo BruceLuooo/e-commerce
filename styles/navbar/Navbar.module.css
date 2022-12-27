@@ -1,0 +1,115 @@
+.navbarContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+  margin: 0 auto;
+  width: 100%;
+  background-color: grey;
+}
+
+.navbar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36rem;
+}
+
+.format {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+}
+.left {
+  cursor: pointer;
+  max-width: 4rem;
+
+}
+.center{
+  max-width: 4rem;
+  margin: 0 auto;
+  justify-content: center;
+  cursor: pointer;
+}
+.right {
+  justify-content: flex-end;
+}
+
+.underLineAnimation {
+  position: relative;
+}
+.underLineAnimation:before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  transform: scaleX(0);
+  height: 2px;
+  top: 2.8rem;
+  background-color: black;
+  transform-origin: center;
+  transition: transform 0.25s ease-out;
+}
+
+.underLineAnimation:hover:before {
+  transform: scaleX(1);
+}
+
+.popupClosed {
+  display: none;
+  transition: 0.3s;
+}
+
+.popupOpen {
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: grey;
+}
+
+.searchBar {
+  margin-right: 1.5rem;
+  position: relative;
+}
+.searchBarInput{
+  padding: 8px 48px;
+  width: 180px;
+  cursor: text;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  color: black;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+.searchBarInput:hover {
+  opacity: 1;
+}
+.searchIcon {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  padding:8px;
+}
+
+.shoppingCartIcon {
+  position: relative;
+  cursor: pointer;
+}
+.shoppingCartIcon > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  background-color: red;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+}
+
+
