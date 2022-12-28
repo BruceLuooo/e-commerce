@@ -1,0 +1,39 @@
+.SuggestedProductsContainer {
+  margin: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.SuggestedProductsContainer > span {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.productInformation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image {
+  opacity: 1;
+  transition: 0.3s;
+}
+.image:hover{
+  opacity: 0.8;
+}

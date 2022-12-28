@@ -6,6 +6,7 @@ import { addProducts, getAllProducts } from '../app/productsSlice';
 import styles from '../styles/Home.module.css';
 import NewArrivals from '../components/homePage/NewArrivals';
 import Head from 'next/head';
+import OpenCloseArrow from '../components/OpenCloseArrow';
 
 interface productInformation {
 	description?: string;

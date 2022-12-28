@@ -3,14 +3,18 @@ import styles from '../styles/OpenCloseArrow.module.css';
 import arrow from '../public/arrow.svg';
 import Image from 'next/image';
 
-function OpenCloseArrow() {
+type props = {
+	popup: boolean;
+};
+
+function OpenCloseArrow({ popup }: props) {
 	const [open, setOpen] = useState(false);
 
 	return (
 		<div>
 			<div
 				className={
-					open
+					popup
 						? `${styles.arrow} ${styles.open} `
 						: `${styles.arrow} ${styles.close} `
 				}

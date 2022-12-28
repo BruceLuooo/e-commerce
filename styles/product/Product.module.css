@@ -1,0 +1,170 @@
+.productContainer{
+  --large-font-size: 32px;
+  --medium-font-size: 16px;
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.product {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 50px 0;
+}
+
+.productImage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.productInformation {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 44px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.name, .price {
+  margin-bottom: 15px;
+}
+
+.brand, .description {
+  font-size: var(--medium-font-size);
+}
+
+.name {
+  font-size: var(--large-font-size);
+}
+.price {
+  font-size: 24px;
+}
+.brand {
+  width: fit-content;
+  padding: 0;
+  border: none;
+  background-color: white;
+  color: grey;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: lightgrey;
+  text-underline-offset: 4px;
+}
+.brand:hover {
+  text-decoration-color: black;
+}
+
+.thinLine {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.button {
+  height: 48px;
+  margin-bottom: 10px;
+  font-size: var(--medium-font-size);
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.addToCart {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+.addToCart:hover {
+  background-color: black;
+  color: white;
+}
+.buy {
+  background-color: black;
+  color: white
+}
+
+.quantityContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 10px 0;
+}
+.quantityContainer > span {
+  font-size: var(--medium-font-size);
+  font-weight: 600;
+}
+.quantityLayout{
+  display: flex;
+  flex-direction: row;
+  padding: 15px 15px 25px 0;
+}
+.quantity{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+.number {
+  cursor: unset;
+  font-weight: 600;
+}
+.addOrRemove {
+  background-color: white;
+  color: black;
+  border: 1px solid lightgrey;
+  font-size: 20px;
+  border-radius: 4px;
+}
+.addOrRemove:hover{
+  border: 1px solid black;
+}
+
+.input{
+  display: flex;
+  text-align: center;
+  cursor: text;
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+  margin-top: 15px;
+}
+.descriptionHeader {
+  text-align: left;
+  position: relative;
+  padding: 15px 30px 15px 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+.arrowIcon {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+
+.description {
+  line-height: 0;
+  opacity: 0;
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+.openDescription {
+  line-height: 1.5;
+  opacity: 1;
+}

@@ -35,10 +35,10 @@ function Navbar() {
 							<Image src={search} alt='search Icon' height={20} width={20} />
 						</div>
 					</div>
-					<div className={styles.shoppingCartIcon}>
+					<Link href={'/cart'} className={styles.shoppingCartIcon}>
 						<Image src={cart} alt='cart Icon' height={32} width={32} />
 						<span>2</span>
-					</div>
+					</Link>
 				</div>
 			</div>
 

@@ -3,6 +3,7 @@ import React from 'react';
 import styles from '../../styles/homePage/DisplayProducts.module.css';
 import cart from '../../public/shoppingCart.svg';
 import Link from 'next/link';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
 
 interface productInformation {
 	description?: string;
@@ -18,10 +19,7 @@ type props = {
 };
 
 function DisplayProducts(product: props) {
-	const currencyFormatter = new Intl.NumberFormat('en-US', {
-		style: 'currency',
-		currency: 'CAD',
-	});
+	const { currencyFormatter } = useFormatCurrency();
 
 	return (
 		<Link
