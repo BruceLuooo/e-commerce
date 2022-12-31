@@ -1,12 +1,7 @@
-.newArrivalContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 1rem;
-}
-
 .carousel{
   display: flex;
   flex-direction: row;
+  margin: 0 8rem;
   gap: 2rem;
+  padding: 1rem;
 }

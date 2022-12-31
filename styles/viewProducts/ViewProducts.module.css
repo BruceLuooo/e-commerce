@@ -1,0 +1,102 @@
+.viewProductContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 1380px;
+  width: 100%;
+  margin: auto;
+  margin-top: 80px;
+}
+
+.headerLayout{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  font-size: 27px;
+  line-height: 17px;
+}
+
+.viewProductsLayout {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.dropdownContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 24px;
+  text-align: left;
+  position: relative;
+}
+
+.filterButton {
+  padding-right: 40px;
+  font-weight: 600;
+  margin-left: 12px;
+  border: none;
+  background-color: white;
+  width: 140px;
+  white-space: nowrap;
+  transition: 0.3s;
+  color: black;
+  z-index: 3;
+}
+.filterButtonWide{
+  display: flex;
+  width: 190px;
+}
+.filterSelection{
+  display: flex;
+  font-size: 16px;
+  justify-content: flex-end;
+}
+.filterOptions{
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  border: none;
+  background-color: white;
+  color: black;
+  line-height: 20px;
+  padding: 6px 40px 6px 30px;
+}
+.filterOptions:hover{
+  background-color: lightgrey;
+}
+.filterArrow {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  transform: rotate(0deg);
+  transform-origin: center;
+  transition: 0.3s;
+}
+
+.filterOpen {
+  transform: rotate(-180deg);
+  transition: 0.3s;
+}
+
+.dropdownMenu {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: -15px;
+  z-index: 2;
+  background-color: #ffffff;
+  width: 215px; 
+  padding: 50px 0 12px 0;
+  box-shadow: 0 6px 12px 1px #0000001f;
+  opacity: 0;
+  transition: 0.5s;
+}
+.visible {
+  visibility: visible;
+  opacity: 1;
+}

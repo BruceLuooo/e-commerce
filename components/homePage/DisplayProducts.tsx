@@ -4,6 +4,7 @@ import styles from '../../styles/homePage/DisplayProducts.module.css';
 import cart from '../../public/shoppingCart.svg';
 import Link from 'next/link';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
+import astro from '../../public/astro.png';
 
 interface productInformation {
 	description?: string;
@@ -27,7 +28,7 @@ function DisplayProducts(product: props) {
 			href={`/product/${product.product.id}`}
 		>
 			<div className={styles.image}>
-				<Image src={cart} alt='shoppingcart' width={100} height={100} />
+				<Image src={astro} alt='shoppingcart' width={250} height={300} />
 			</div>
 			<div className={styles.information}>
 				<span className={styles.smallFont}>{product.product.brand}</span>

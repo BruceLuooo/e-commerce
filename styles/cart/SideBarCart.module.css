@@ -1,0 +1,38 @@
+.sidebarContainer{
+  background-color: white;
+  width: 400px;
+  height: 100vh;
+  padding: 80px 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.item {
+  display: flex;
+}
+
+.itemDescription {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+  gap: 0.5rem;
+}
+
+.itemDescription > span:nth-child(1) {
+  font-weight: 500;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 8px 0;
+  border: 1px solid black;
+  border-radius: 6px;
+  text-decoration: none;
+}

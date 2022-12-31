@@ -1,34 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/navbar/Navbar.module.css';
 import NavbarPopup from './NavbarPopup';
 import cart from '../../public/shoppingCart.svg';
 import search from '../../public/search.svg';
-import { CSSTransition } from 'react-transition-group';
 import Image from 'next/image';
 import Link from 'next/link';
+import astro from '../../public/astro.png';
 
 function Navbar() {
 	const [popup, setPopup] = useState(false);
-	const [searchBar, setSearchBar] = useState(false);
+	const [searchBarActive, setSearchBarActive] = useState(false);
+
+	useEffect(() => {
+		const handler = () => setSearchBarActive(false);
+
+		addEventListener('click', handler);
+	}, []);
+
+	const handleSearchBar = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
+		setSearchBarActive(true);
+	};
 
 	return (
 		<nav className={styles.navbarContainer}>
 			<div className={styles.navbar}>
-				<Link href={'/'} className={`${styles.format} ${styles.left}`}>
-					<div>Logo</div>
-				</Link>
+				<div className={styles.left}>
+					<Link href={'/'} className={`${styles.format} `}>
+						<div>Logo</div>
+					</Link>
+				</div>
 				<div
-					className={`${styles.underLineAnimation} ${styles.format} ${styles.center}`}
+					className={`${
+						popup ? styles.underLineAnimation : styles.underlineNone
+					} ${styles.format} ${styles.middle}`}
 					onMouseOver={() => setPopup(true)}
 					onMouseLeave={() => setPopup(false)}
 				>
 					Shop
 				</div>
 				<div className={`${styles.format} ${styles.right}  `}>
-					<div className={`${styles.searchBar}`}>
+					<div className={`${styles.searchBar} `} onClick={handleSearchBar}>
 						<input
 							type='text'
-							className={styles.searchBarInput}
+							className={`${styles.searchBarInput} ${
+								searchBarActive && styles.searchBarActive
+							}`}
 							placeholder='search'
 						/>
 						<div className={styles.searchIcon}>
@@ -41,13 +58,42 @@ function Navbar() {
 					</Link>
 				</div>
 			</div>
-
+			<div
+				className={`${styles.searchResultsContainer} ${
+					searchBarActive && styles.searchResultsVisible
+				}`}
+			>
+				{/* Use Map to map through results */}
+				<Link href={'/viewProducts/Cleanser'}>
+					<div className={styles.searchResult}>
+						<Image src={astro} alt='product picture' width={90} height={100} />
+						<div className={styles.productInfo}>
+							<div>Low pH Good Morning Gel Cleanser</div>
+							<div>Versace Cleanser</div>
+							<div>$14.00</div>
+						</div>
+					</div>
+				</Link>
+				<Link href={'/viewProducts/Cleanser'}>
+					<div className={styles.searchResult}>
+						<Image src={astro} alt='product picture' width={90} height={100} />
+						<div className={styles.productInfo}>
+							<div>Low pH Good Morning Gel Cleanser</div>
+							<div>Versace Cleanser</div>
+							<div>$14.00</div>
+						</div>
+					</div>
+				</Link>
+				<Link href={'/search'} className={styles.button}>
+					See All
+				</Link>
+			</div>
 			<div
 				onMouseOver={() => setPopup(true)}
 				onMouseLeave={() => setPopup(false)}
 				className={popup ? styles.popupOpen : styles.popupClosed}
 			>
-				<NavbarPopup />
+				<NavbarPopup setPopup={setPopup} />
 			</div>
 		</nav>
 	);

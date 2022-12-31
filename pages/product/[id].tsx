@@ -7,6 +7,7 @@ import astro from '../../public/astro.png';
 import { useEffect, useState } from 'react';
 import OpenCloseArrow from '../../components/OpenCloseArrow';
 import SuggestedProducts from '../../components/SuggestedProducts';
+import SideBarCart from '../../components/cart/SideBarCart';
 
 interface Information {
 	params: {
@@ -34,12 +35,24 @@ export default function Product({ product }: Props) {
 
 	const [quantity, setQuantity] = useState(1);
 	const [popup, setPopUp] = useState(false);
+	const [sideBarCart, setSideBarCart] = useState(false);
+
+	useEffect(() => {
+		const handler = () => setSideBarCart(false);
+
+		'click scroll'.split(' ').forEach(e => addEventListener(e, handler));
+	});
+
+	const openSideBarCart = (e: any) => {
+		e.stopPropagation();
+		setSideBarCart(true);
+	};
 
 	const addItem = () => {
 		setQuantity(quantity + 1);
 	};
 	const removeItem = () => {
-		if (quantity === 0) {
+		if (quantity === 1) {
 			return;
 		} else {
 			setQuantity(quantity - 1);
@@ -82,7 +95,10 @@ export default function Product({ product }: Props) {
 							</button>
 						</div>
 					</div>
-					<button className={`${styles.button} ${styles.addToCart} `}>
+					<button
+						className={`${styles.button} ${styles.addToCart} `}
+						onClick={openSideBarCart}
+					>
 						Add To Cart
 					</button>
 					<button className={`${styles.button} ${styles.buy} `}>
@@ -109,6 +125,14 @@ export default function Product({ product }: Props) {
 				</div>
 			</div>
 			<SuggestedProducts />
+			<div
+				className={`${styles.sideBarCart} ${
+					sideBarCart && styles.sideBarCartActive
+				}`}
+				onClick={openSideBarCart}
+			>
+				<SideBarCart />
+			</div>
 		</div>
 	);
 }

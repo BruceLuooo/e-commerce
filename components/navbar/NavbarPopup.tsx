@@ -2,8 +2,12 @@ import Link from 'next/link';
 import React from 'react';
 import styles from '../../styles/navbar/NavbarPopup.module.css';
 
-function NavbarPopup() {
-	const productType = ['Accessories', 'Cleansers', 'Masks', 'Moisturizer'];
+type Props = {
+	setPopup: Function;
+};
+
+function NavbarPopup({ setPopup }: Props) {
+	const productType = ['Accessories', 'Cleanser', 'Mask', 'Moisturizer'];
 	const skinType = ['Oily', 'Dry', 'Normal', 'Combination'];
 
 	return (
@@ -13,7 +17,12 @@ function NavbarPopup() {
 				<div>
 					{productType.map((product, index) => (
 						<div key={index} className={styles.products}>
-							<Link href={`/collections/${product}`}>{product}</Link>
+							<Link
+								href={`/viewProducts/${product}`}
+								onClick={() => setPopup(false)}
+							>
+								{product}
+							</Link>
 						</div>
 					))}
 				</div>
@@ -23,7 +32,12 @@ function NavbarPopup() {
 				<div>
 					{skinType.map((product, index) => (
 						<div key={index} className={styles.products}>
-							<Link href={`/collections/${product}`}>{product}</Link>
+							<Link
+								href={`/collections/${product}`}
+								onClick={() => setPopup(false)}
+							>
+								{product}
+							</Link>
 						</div>
 					))}
 				</div>

@@ -18,26 +18,31 @@ function SuggestedProducts() {
 	const [products, setProducts] = useState<productInformation[]>([]);
 
 	useEffect(() => {
-		const products: productInformation[] = [];
-		const getFourRandomProducts: productInformation[] = [];
-
 		const getProducts = async () => {
+			const products: productInformation[] = [];
+			const getFourRandomProducts: productInformation[] = [];
 			await getDocs(collection(db, 'products')).then(querySnapshot => {
 				querySnapshot.forEach(doc => {
-					products.push(doc.data());
+					products.push({
+						price: doc.data().price,
+						productName: doc.data().productName,
+						id: doc.id,
+					});
 				});
 			});
 
-			for (let i = 1; i < 5; i++) {
+			while (getFourRandomProducts.length < 4) {
 				const getRandomNumber = Math.floor(Math.random() * products.length);
 				const randomProduct = products[getRandomNumber];
-				const findDuplicate = getFourRandomProducts.find(
-					product => product.id === randomProduct.id,
-				);
+				const findDuplicate = getFourRandomProducts.find(product => {
+					product.id === randomProduct.id;
+				});
+
 				if (!findDuplicate) {
 					getFourRandomProducts.push(randomProduct);
 				}
 			}
+
 			setProducts(getFourRandomProducts);
 		};
 
