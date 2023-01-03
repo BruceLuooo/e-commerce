@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import styles from '../../styles/buy/PaymentInformation.module.css';
+import useHandlePaymentInfo from '../../hooks/useHandlePaymentInfo';
 
 type Props = {
 	prevPage: Function;
 };
 
 function PaymentInformation({ prevPage }: Props) {
-	const [userInfo, setUserInfo] = useState({
-		promoCode: '',
-		nameOnCard: '',
-		cardNumber: '',
-		monthAndYear: '',
-		cvv: '',
-	});
+	const {
+		paymentInfo,
+		updateCVV,
+		updateMonthAndYear,
+		updateCardNumber,
+		updateNameAndPromo,
+	} = useHandlePaymentInfo();
 
 	const placeOrder = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -34,10 +35,10 @@ function PaymentInformation({ prevPage }: Props) {
 					id='promoCode'
 					type='text'
 					placeholder='Promo'
-					// value={userInfo.promoCode}
-					// onChange={updateUserInfo}
+					value={paymentInfo.promoCode}
+					onChange={updateNameAndPromo}
 				/>
-				{userInfo.promoCode !== '' && (
+				{paymentInfo.promoCode !== '' && (
 					<div className={styles.inputLabel}>Promo</div>
 				)}
 			</div>
@@ -48,10 +49,10 @@ function PaymentInformation({ prevPage }: Props) {
 					id='nameOnCard'
 					type='text'
 					placeholder='Name on card'
-					// value={userInfo.nameOnCard}
-					// onChange={updateUserInfo}
+					value={paymentInfo.nameOnCard}
+					onChange={updateNameAndPromo}
 				/>
-				{userInfo.nameOnCard !== '' && (
+				{paymentInfo.nameOnCard !== '' && (
 					<div className={styles.inputLabel}>Name on card</div>
 				)}
 			</div>
@@ -61,10 +62,10 @@ function PaymentInformation({ prevPage }: Props) {
 					id='cardNumber'
 					type='text'
 					placeholder='Card number'
-					// value={userInfo.cardNumber}
-					// onChange={updateUserInfo}
+					value={paymentInfo.cardNumber}
+					onChange={updateCardNumber}
 				/>
-				{userInfo.cardNumber !== '' && (
+				{paymentInfo.cardNumber !== '' && (
 					<div className={styles.inputLabel}>Card number</div>
 				)}
 			</div>
@@ -76,10 +77,10 @@ function PaymentInformation({ prevPage }: Props) {
 						id='monthAndYear'
 						type='text'
 						placeholder='MM/YY'
-						// value={userInfo.monthAndYear}
-						// onChange={updateUserInfo}
+						value={paymentInfo.monthAndYear}
+						onChange={updateMonthAndYear}
 					/>
-					{userInfo.monthAndYear !== '' && (
+					{paymentInfo.monthAndYear !== '' && (
 						<div className={styles.inputLabel}>MM/YY</div>
 					)}
 				</div>
@@ -88,11 +89,13 @@ function PaymentInformation({ prevPage }: Props) {
 						className={`${styles.textInput} `}
 						id='cvv'
 						type='text'
-						placeholder='Postal Code'
-						// value={userInfo.cvv}
-						// onChange={updateUserInfo}
+						placeholder='CVV'
+						value={paymentInfo.cvv}
+						onChange={updateCVV}
 					/>
-					{userInfo.cvv !== '' && <div className={styles.inputLabel}>CVV</div>}
+					{paymentInfo.cvv !== '' && (
+						<div className={styles.inputLabel}>CVV</div>
+					)}
 				</div>
 			</div>
 			<button type='submit' className={styles.button}>

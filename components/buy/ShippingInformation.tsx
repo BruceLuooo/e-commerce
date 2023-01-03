@@ -1,26 +1,47 @@
 import React, { useState } from 'react';
+import useInformationCheck from '../../hooks/useInformationCheck';
 import styles from '../../styles/buy/PaymentInformation.module.css';
+
+interface userInfo {
+	name: string;
+	lastName: string;
+	address: string;
+	postalCode: string;
+	city: string;
+	province: string;
+	country: string;
+	email: string;
+	phone: string;
+}
 
 type Props = {
 	nextPage: Function;
+	setUserInfo: Function;
+	userInfo: userInfo;
 };
 
-function ShippingInformation({ nextPage }: Props) {
-	const [userInfo, setUserInfo] = useState({
-		name: '',
-		lastName: '',
-		address: '',
-		postalCode: '',
-		city: '',
-		province: '',
-		country: 'Canada',
-		email: '',
-		phone: '',
-	});
+function ShippingInformation({ nextPage, setUserInfo, userInfo }: Props) {
+	const { informationCheck } = useInformationCheck();
+
+	const [error, setError] = useState({ active: false, msg: '' });
 
 	const goToPayment = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		nextPage(true);
+
+		const userInformationCompleted = informationCheck(userInfo);
+
+		if (userInformationCompleted === false) {
+			return setError({ active: true, msg: 'Please Fill In All Fields' });
+		} else {
+			nextPage(true);
+		}
+	};
+
+	const updateUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setUserInfo((prev: userInfo) => ({
+			...prev,
+			[e.target.id]: e.target.value,
+		}));
 	};
 
 	return (
@@ -33,8 +54,8 @@ function ShippingInformation({ nextPage }: Props) {
 						id='name'
 						type='text'
 						placeholder='First Name'
-						// value={userInfo.name}
-						// onChange={updateUserInfo}
+						value={userInfo.name}
+						onChange={updateUserInfo}
 					/>
 					{userInfo.name !== '' && (
 						<div className={styles.inputLabel}>First Name</div>
@@ -46,8 +67,8 @@ function ShippingInformation({ nextPage }: Props) {
 						id='lastName'
 						type='text'
 						placeholder='Last Name'
-						// value={userInfo.lastName}
-						// onChange={updateUserInfo}
+						value={userInfo.lastName}
+						onChange={updateUserInfo}
 					/>
 					{userInfo.lastName !== '' && (
 						<div className={styles.inputLabel}>Last Name</div>
@@ -59,8 +80,8 @@ function ShippingInformation({ nextPage }: Props) {
 						id='address'
 						type='text'
 						placeholder='Address'
-						// value={userInfo.address}
-						// onChange={updateUserInfo}
+						value={userInfo.address}
+						onChange={updateUserInfo}
 					/>
 					{userInfo.address !== '' && (
 						<div className={styles.inputLabel}>Address</div>
@@ -74,8 +95,8 @@ function ShippingInformation({ nextPage }: Props) {
 							id='city'
 							type='text'
 							placeholder='City'
-							// value={userInfo.city}
-							// onChange={updateUserInfo}
+							value={userInfo.city}
+							onChange={updateUserInfo}
 						/>
 						{userInfo.city !== '' && (
 							<div className={styles.inputLabel}>City</div>
@@ -87,8 +108,8 @@ function ShippingInformation({ nextPage }: Props) {
 							id='postalCode'
 							type='text'
 							placeholder='Postal Code'
-							// value={userInfo.postalCode}
-							// onChange={updateUserInfo}
+							value={userInfo.postalCode}
+							onChange={updateUserInfo}
 						/>
 						{userInfo.postalCode !== '' && (
 							<div className={styles.inputLabel}>Postal Code</div>
@@ -102,8 +123,8 @@ function ShippingInformation({ nextPage }: Props) {
 							id='province'
 							type='text'
 							placeholder='Province'
-							// value={userInfo.province}
-							// onChange={updateUserInfo}
+							value={userInfo.province}
+							onChange={updateUserInfo}
 						/>
 						{userInfo.province !== '' && (
 							<div className={styles.inputLabel}>Province</div>
@@ -128,8 +149,8 @@ function ShippingInformation({ nextPage }: Props) {
 						id='email'
 						type='text'
 						placeholder='Email'
-						// value={userInfo.email}
-						// onChange={updateUserInfo}
+						value={userInfo.email}
+						onChange={updateUserInfo}
 					/>
 					{userInfo.email !== '' && (
 						<div className={styles.inputLabel}>Email</div>
@@ -141,14 +162,15 @@ function ShippingInformation({ nextPage }: Props) {
 						id='phone'
 						type='text'
 						placeholder='Phone Number'
-						// value={userInfo.phone}
-						// onChange={updateUserInfo}
+						value={userInfo.phone}
+						onChange={updateUserInfo}
 					/>
 					{userInfo.phone !== '' && (
 						<div className={styles.inputLabel}>Phone</div>
 					)}
 				</div>
 			</div>
+			{error && <div className={styles.error}>{error.msg}</div>}
 			<button type='submit' className={styles.button}>
 				Continue
 			</button>

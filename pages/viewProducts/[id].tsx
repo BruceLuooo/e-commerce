@@ -1,5 +1,5 @@
 import { collection, getDocs } from '@firebase/firestore';
-import { query, where, getDoc } from 'firebase/firestore';
+import { query, where, orderBy } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import DisplayProducts from '../../components/homePage/DisplayProducts';
 import styles from '../../styles/viewProducts/ViewProducts.module.css';
@@ -28,19 +28,20 @@ type Props = {
 };
 
 function ViewProducts({ products }: Props) {
+	const router = useRouter();
+
 	const filterOptions = [
 		'Best Selling',
 		'Alphabetically, A-Z',
+		'Alphabetically, Z-A',
 		'Price, low to high',
+		'Price, high to low',
 	];
 	const [header, setHeader] = useState<string>('');
 	const [openFilter, setOpenFilter] = useState<boolean>(false);
 	const [selectedFilter, setSelectedFilter] = useState('Best Selling');
+	const [displayProducts, setDisplayProducts] = useState(products);
 
-	const changeFilter = (filter: string) => {
-		setSelectedFilter(filter);
-		setOpenFilter(false);
-	};
 	const setFilter = (e: any) => {
 		e.stopPropagation();
 		setOpenFilter(!openFilter);
@@ -57,6 +58,54 @@ function ViewProducts({ products }: Props) {
 
 		addEventListener('click', handler);
 	});
+
+	const reorderProducts = async (filter: string) => {
+		setSelectedFilter(filter);
+		setOpenFilter(false);
+
+		if (filter === 'Best Selling') {
+			return setDisplayProducts(products);
+		}
+
+		const getCollection = collection(db, 'products');
+		let q;
+
+		if (filter === 'Alphabetically, A-Z') {
+			q = query(
+				getCollection,
+				where('productType', '==', `${header}`),
+				orderBy('productName'),
+			);
+		} else if (filter === 'Alphabetically, Z-A') {
+			q = query(
+				getCollection,
+				where('productType', '==', `${header}`),
+				orderBy('productName', 'desc'),
+			);
+		} else if (filter === 'Price, high to low') {
+			q = query(
+				getCollection,
+				where('productType', '==', `${header}`),
+				orderBy('price', 'desc'),
+			);
+		} else {
+			q = query(
+				getCollection,
+				where('productType', '==', `${header}`),
+				orderBy('price'),
+			);
+		}
+
+		const docSnap = await getDocs(q);
+
+		const allProductsRef: Product[] = [];
+
+		docSnap.forEach((doc: any) => {
+			allProductsRef.push(doc.data());
+		});
+
+		setDisplayProducts(allProductsRef);
+	};
 
 	return (
 		<div className={styles.viewProductContainer}>
@@ -90,7 +139,7 @@ function ViewProducts({ products }: Props) {
 							<button
 								key={index}
 								className={`${styles.filterSelection} ${styles.filterOptions}`}
-								onClick={() => changeFilter(filter)}
+								onClick={() => reorderProducts(filter)}
 							>
 								{filter}
 							</button>

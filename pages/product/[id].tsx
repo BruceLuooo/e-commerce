@@ -8,6 +8,10 @@ import { useEffect, useState } from 'react';
 import OpenCloseArrow from '../../components/OpenCloseArrow';
 import SuggestedProducts from '../../components/SuggestedProducts';
 import SideBarCart from '../../components/cart/SideBarCart';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
+import { useAppDispatch } from '../../app/hooks';
+import { addToCheckout } from '../../app/checkoutSlice';
+import { useRouter } from 'next/router';
 
 interface Information {
 	params: {
@@ -25,23 +29,28 @@ interface Product {
 	productName: string;
 	brand: string;
 	productType: string;
+	id: string;
 }
 
 export default function Product({ product }: Props) {
-	const currencyFormatter = new Intl.NumberFormat('en-US', {
-		style: 'currency',
-		currency: 'CAD',
-	});
+	const { currencyFormatter } = useFormatCurrency();
+	const dispatch = useAppDispatch();
+	const navigate = useRouter();
 
 	const [quantity, setQuantity] = useState(1);
-	const [popup, setPopUp] = useState(false);
+	const [totalCost, setTotalCost] = useState(product.price);
+	const [descriptionPopup, setDescriptionPopup] = useState(false);
 	const [sideBarCart, setSideBarCart] = useState(false);
 
 	useEffect(() => {
 		const handler = () => setSideBarCart(false);
 
 		'click scroll'.split(' ').forEach(e => addEventListener(e, handler));
-	});
+	}, []);
+
+	useEffect(() => {
+		setTotalCost(product.price * quantity);
+	}, [quantity]);
 
 	const openSideBarCart = (e: any) => {
 		e.stopPropagation();
@@ -57,6 +66,31 @@ export default function Product({ product }: Props) {
 		} else {
 			setQuantity(quantity - 1);
 		}
+	};
+	const addItemToCheckout = (quantity: number, product: Product, e: any) => {
+		e.stopPropagation();
+		const item = {
+			price: product.price,
+			productName: product.productName,
+			brand: product.brand,
+			quantity: quantity,
+			id: product.id,
+		};
+
+		setSideBarCart(true);
+		dispatch(addToCheckout(item));
+	};
+	const goToCheckout = (quantity: number, product: Product) => {
+		const item = {
+			price: product.price,
+			productName: product.productName,
+			brand: product.brand,
+			quantity: quantity,
+			id: product.id,
+		};
+
+		dispatch(addToCheckout(item));
+		navigate.push('/buy');
 	};
 
 	return (
@@ -97,26 +131,29 @@ export default function Product({ product }: Props) {
 					</div>
 					<button
 						className={`${styles.button} ${styles.addToCart} `}
-						onClick={openSideBarCart}
+						onClick={(e: any) => addItemToCheckout(quantity, product, e)}
 					>
 						Add To Cart
 					</button>
-					<button className={`${styles.button} ${styles.buy} `}>
+					<button
+						className={`${styles.button} ${styles.buy} `}
+						onClick={() => goToCheckout(quantity, product)}
+					>
 						Buy It Now
 					</button>
 					<div className={styles.descriptionContainer}>
 						<div
 							className={styles.descriptionHeader}
-							onClick={() => setPopUp(!popup)}
+							onClick={() => setDescriptionPopup(!descriptionPopup)}
 						>
 							<span>Description</span>
 							<div className={styles.arrowIcon}>
-								<OpenCloseArrow popup={popup} />
+								<OpenCloseArrow popup={descriptionPopup} />
 							</div>
 						</div>
 						<span
 							className={`${styles.description} ${
-								popup && styles.openDescription
+								descriptionPopup && styles.openDescription
 							}`}
 						>
 							{product.description}
@@ -131,7 +168,11 @@ export default function Product({ product }: Props) {
 				}`}
 				onClick={openSideBarCart}
 			>
-				<SideBarCart />
+				<SideBarCart
+					totalCost={totalCost}
+					quantity={quantity}
+					product={product.productName}
+				/>
 			</div>
 		</div>
 	);

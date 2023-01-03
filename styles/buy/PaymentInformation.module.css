@@ -51,6 +51,10 @@
   margin-bottom: 8px;
 }
 
+.error {
+  color: red;
+}
+
 .goBack {
   display: flex;
   padding-left: 0;

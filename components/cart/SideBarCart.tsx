@@ -4,8 +4,24 @@ import styles from '../../styles/cart/SideBarCart.module.css';
 import astro from '../../public/astro.png';
 import greenCheck from '../../public/greenCheck.svg';
 import Link from 'next/link';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
+import { useSelector } from 'react-redux';
+import { getCheckoutItems } from '../../app/checkoutSlice';
 
-function SideBarCart() {
+type Props = {
+	quantity: number;
+	totalCost: number;
+	product: string;
+};
+
+function SideBarCart({ quantity, totalCost, product }: Props) {
+	const { currencyFormatter } = useFormatCurrency();
+	const checkoutItems = useSelector(getCheckoutItems);
+
+	let totalItemsInCheckoutBag = 0;
+
+	checkoutItems.forEach(item => (totalItemsInCheckoutBag += item.quantity));
+
 	return (
 		<div className={styles.sidebarContainer}>
 			<div className={styles.header}>
@@ -19,13 +35,13 @@ function SideBarCart() {
 					<Image src={astro} alt='product image' width={150} height={200} />
 				</div>
 				<div className={styles.itemDescription}>
-					<span>Low pH Good Morning Gel Cleanser </span>
-					<span>Quantity: 2</span>
-					<span>CA$28.00</span>
+					<span>{product}</span>
+					<span>Quantity: {quantity}</span>
+					<span>{currencyFormatter.format(totalCost)}</span>
 				</div>
 			</div>
 			<Link className={styles.button} href={'/cart'}>
-				View Bag(2)
+				View Bag({totalItemsInCheckoutBag})
 			</Link>
 			<Link className={styles.button} href={'/buy'}>
 				Checkout
