@@ -11,40 +11,38 @@ export interface productInformation {
 	id: string;
 }
 
-let initialState: productInformation[] = [
-	{
-		productName: 'Facial Cleanser Special',
-		price: 14,
-		brand: 'Corsx',
-		quantity: 3,
-		id: '123',
-	},
-	{
-		productName: 'Dragon Cleanser',
-		price: 20,
-		brand: 'Goku',
-		quantity: 2,
-		id: '456',
-	},
-];
+interface initalState {
+	cart: productInformation[];
+}
+
+const initialState: initalState = {
+	cart: [],
+};
 
 export const checkoutSlice = createSlice({
 	name: 'checkout',
 	initialState,
 	reducers: {
 		addToCheckout: (state, action) => {
-			state.push(action.payload);
+			const findIndex = state.cart.findIndex(
+				item => item.id === action.payload.id,
+			);
+			if (findIndex === -1) {
+				state.cart.push(action.payload);
+			} else {
+				state.cart[findIndex].quantity += action.payload.quantity;
+			}
 		},
 		addQuantity: (state, action) => {
-			const index = state.findIndex(item => item.id === action.payload);
-			state[index].quantity += 1;
+			const index = state.cart.findIndex(item => item.id === action.payload);
+			state.cart[index].quantity += 1;
 		},
 		removeQuantity: (state, action) => {
-			const index = state.findIndex(item => item.id === action.payload);
-			state[index].quantity -= 1;
+			const index = state.cart.findIndex(item => item.id === action.payload);
+			state.cart[index].quantity -= 1;
 		},
 		removeItem: (state, action) => {
-			return state.filter(item => item.id !== action.payload);
+			state.cart = state.cart.filter(item => item.id !== action.payload);
 		},
 	},
 });
@@ -52,6 +50,6 @@ export const checkoutSlice = createSlice({
 export const { addQuantity, removeQuantity, removeItem, addToCheckout } =
 	checkoutSlice.actions;
 
-export const getCheckoutItems = (state: RootState) => state.checkout;
+export const getCheckoutItems = (state: RootState) => state.checkout.cart;
 
 export default checkoutSlice.reducer;

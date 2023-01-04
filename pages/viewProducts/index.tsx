@@ -25,11 +25,14 @@ interface Product {
 
 type Props = {
 	products: Product[];
+	sortingOption: string;
 };
 
-function ViewProducts({ products }: Props) {
+function ViewProducts({ products, sortingOption }: Props) {
 	const router = useRouter();
+	const { query } = router;
 
+	const selectedFilter = sortingOption;
 	const filterOptions = [
 		'Best Selling',
 		'Alphabetically, A-Z',
@@ -37,21 +40,8 @@ function ViewProducts({ products }: Props) {
 		'Price, low to high',
 		'Price, high to low',
 	];
-	const [header, setHeader] = useState<string>('');
+	const [header, setHeader] = useState(query.productType);
 	const [openFilter, setOpenFilter] = useState<boolean>(false);
-	const [selectedFilter, setSelectedFilter] = useState('Best Selling');
-	const [displayProducts, setDisplayProducts] = useState(products);
-
-	const setFilter = (e: any) => {
-		e.stopPropagation();
-		setOpenFilter(!openFilter);
-	};
-
-	useEffect(() => {
-		const url = document.URL;
-		const urlTag = url.split('/');
-		setHeader(urlTag[urlTag.length - 1]);
-	});
 
 	useEffect(() => {
 		const handler = () => setOpenFilter(false);
@@ -59,52 +49,26 @@ function ViewProducts({ products }: Props) {
 		addEventListener('click', handler);
 	});
 
-	const reorderProducts = async (filter: string) => {
-		setSelectedFilter(filter);
-		setOpenFilter(false);
+	useEffect(() => {
+		setHeader(query.productType);
+	}, [query]);
 
-		if (filter === 'Best Selling') {
-			return setDisplayProducts(products);
-		}
+	const filterSearch = (sort: string) => {
+		query.sort = sort;
 
-		const getCollection = collection(db, 'products');
-		let q;
-
-		if (filter === 'Alphabetically, A-Z') {
-			q = query(
-				getCollection,
-				where('productType', '==', `${header}`),
-				orderBy('productName'),
-			);
-		} else if (filter === 'Alphabetically, Z-A') {
-			q = query(
-				getCollection,
-				where('productType', '==', `${header}`),
-				orderBy('productName', 'desc'),
-			);
-		} else if (filter === 'Price, high to low') {
-			q = query(
-				getCollection,
-				where('productType', '==', `${header}`),
-				orderBy('price', 'desc'),
-			);
-		} else {
-			q = query(
-				getCollection,
-				where('productType', '==', `${header}`),
-				orderBy('price'),
-			);
-		}
-
-		const docSnap = await getDocs(q);
-
-		const allProductsRef: Product[] = [];
-
-		docSnap.forEach((doc: any) => {
-			allProductsRef.push(doc.data());
+		router.push({
+			pathname: router.pathname,
+			query: query,
 		});
+	};
 
-		setDisplayProducts(allProductsRef);
+	const selectSortOption = (product: string) => {
+		filterSearch(product);
+	};
+
+	const openAndCloseSortingOptions = (e: any) => {
+		e.stopPropagation();
+		setOpenFilter(!openFilter);
 	};
 
 	return (
@@ -116,7 +80,7 @@ function ViewProducts({ products }: Props) {
 						className={`${styles.filterButton} ${
 							openFilter && styles.filterButtonWide
 						}`}
-						onClick={setFilter}
+						onClick={openAndCloseSortingOptions}
 					>
 						<span className={styles.filterSelection}>{selectedFilter}</span>
 						<span
@@ -139,7 +103,7 @@ function ViewProducts({ products }: Props) {
 							<button
 								key={index}
 								className={`${styles.filterSelection} ${styles.filterOptions}`}
-								onClick={() => reorderProducts(filter)}
+								onClick={() => selectSortOption(filter)}
 							>
 								{filter}
 							</button>
@@ -160,38 +124,57 @@ function ViewProducts({ products }: Props) {
 
 export default ViewProducts;
 
-export async function getStaticPaths() {
-	let products: Paths[] = [];
+export async function getServerSideProps(context: any) {
+	const sort = context.query.sort || 'Best Selling';
+	const productType = context.query.productType;
 
-	await getDocs(collection(db, 'productType')).then(querySnapshot => {
-		querySnapshot.forEach(doc => {
-			products.push({
-				params: {
-					id: `${doc.data().type}`,
-				},
-			});
-		});
-	});
+	const getCollection = collection(db, 'products');
+	let q;
 
-	return { paths: products, fallback: false };
-}
+	if (sort === 'Best Selling') {
+		q = query(
+			getCollection,
+			where('productType', '==', `${productType}`),
+			orderBy('productName'),
+		);
+	} else if (sort === 'Alphabetically, A-Z') {
+		q = query(
+			getCollection,
+			where('productType', '==', `${productType}`),
+			orderBy('productName'),
+		);
+	} else if (sort === 'Alphabetically, Z-A') {
+		q = query(
+			getCollection,
+			where('productType', '==', `${productType}`),
+			orderBy('productName', 'desc'),
+		);
+	} else if (sort === 'Price, high to low') {
+		q = query(
+			getCollection,
+			where('productType', '==', `${productType}`),
+			orderBy('price', 'desc'),
+		);
+	} else {
+		q = query(
+			getCollection,
+			where('productType', '==', `${productType}`),
+			orderBy('price'),
+		);
+	}
 
-export async function getStaticProps({ params }: any) {
-	const productData: Product[] = [];
-	const q = query(
-		collection(db, 'products'),
-		where('productType', '==', `${params.id}`),
-	);
+	const docSnap = await getDocs(q);
 
-	const querySnapshot = await getDocs(q);
+	const allProductsRef: Product[] = [];
 
-	querySnapshot.forEach((doc: any) => {
-		productData.push(doc.data());
+	docSnap.forEach((doc: any) => {
+		allProductsRef.push(doc.data());
 	});
 
 	return {
 		props: {
-			products: productData,
+			products: allProductsRef,
+			sortingOption: sort,
 		},
 	};
 }

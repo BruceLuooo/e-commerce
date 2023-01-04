@@ -33,12 +33,17 @@ function Navbar() {
 		const findSearchedItems = async () => {
 			const q = query(
 				collection(db, 'products'),
-				where('productName', 'array-contains-any', ['uniClean']),
+				where('search', 'array-contains-any', [
+					'c',
+					'cl',
+					'clean',
+					'a',
+					'as',
+					'astronomical',
+				]),
 			);
 			const querySnapshot = await getDocs(q);
-			querySnapshot.forEach(doc => {
-				console.log(doc.data());
-			});
+			querySnapshot.forEach(doc => {});
 		};
 
 		findSearchedItems();
