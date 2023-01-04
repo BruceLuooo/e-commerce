@@ -11,6 +11,7 @@ import { getCheckoutItems } from '../../app/checkoutSlice';
 import useDebounce from '../../hooks/useDebounce';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
+import Cookies from 'js-cookie';
 
 function Navbar() {
 	const checkoutItems = useAppSelector(getCheckoutItems);
