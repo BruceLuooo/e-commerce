@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/cart/SideBarCart.module.css';
 import astro from '../../public/astro.png';
 import greenCheck from '../../public/greenCheck.svg';
@@ -18,9 +18,13 @@ function SideBarCart({ quantity, totalCost, product }: Props) {
 	const { currencyFormatter } = useFormatCurrency();
 	const checkoutItems = useSelector(getCheckoutItems);
 
-	let totalItemsInCheckoutBag = 0;
+	const [itemsInCart, setItemsInCart] = useState<number>(0);
 
-	checkoutItems.forEach(item => (totalItemsInCheckoutBag += item.quantity));
+	useEffect(() => {
+		let totalItemsInCheckoutBag = 0;
+		checkoutItems.forEach(item => (totalItemsInCheckoutBag += item.quantity));
+		setItemsInCart(totalItemsInCheckoutBag);
+	}, [checkoutItems]);
 
 	return (
 		<div className={styles.sidebarContainer}>
@@ -41,7 +45,7 @@ function SideBarCart({ quantity, totalCost, product }: Props) {
 				</div>
 			</div>
 			<Link className={styles.button} href={'/cart'}>
-				View Bag({totalItemsInCheckoutBag})
+				View Bag({itemsInCart})
 			</Link>
 			<Link className={styles.button} href={'/buy'}>
 				Checkout

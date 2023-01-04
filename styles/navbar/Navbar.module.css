@@ -178,4 +178,11 @@
   font-size: 12px;
 }
 
+.inactive {
+  visibility: hidden;
+}
+
+.active {
+  visibility: visible;
+}
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/cart/Cart.module.css';
 import astro from '../../public/astro.png';
 import Image from 'next/image';
@@ -12,14 +12,31 @@ import {
 	removeItem,
 } from '../../app/checkoutSlice';
 
+interface productInformation {
+	price: number;
+	productName: string;
+	brand: string;
+	id: string;
+	quantity: number;
+}
+
 const index = () => {
 	const checkoutItems = useAppSelector(getCheckoutItems);
 	const dispatch = useAppDispatch();
 	const { currencyFormatter } = useFormatCurrency();
 
-	let total = 0;
+	const [totalCost, setTotalCost] = useState<string>(
+		currencyFormatter.format(0),
+	);
+	const [items, setItems] = useState<productInformation[]>([]);
 
-	checkoutItems.forEach(item => (total += item.price! * item.quantity));
+	useEffect(() => {
+		let total = 0;
+		checkoutItems.forEach(item => (total += item.price! * item.quantity));
+		setTotalCost(currencyFormatter.format(total));
+		// @ts-ignore
+		setItems(checkoutItems);
+	}, [checkoutItems]);
 
 	const removeFromCart = (id: string, quantity: number) => {
 		if (quantity === 1) {
@@ -40,56 +57,62 @@ const index = () => {
 			<div className={styles.cartLayout}>
 				<div className={styles.items}>
 					<span className={styles.header}>Bag</span>
-					{checkoutItems.map((item, index) => (
-						<div key={index} className={styles.item}>
-							<div className={styles.image}>
-								<Image
-									src={astro}
-									alt='product image'
-									width={150}
-									height={200}
-								/>
-							</div>
-							<div className={styles.itemDescriptionLayout}>
-								<div className={styles.itemDescription}>
-									<span className={styles.itemName}>{item.productName}</span>
-									<span>By: {item.brand}</span>
-									<div className={styles.quantityLayout}>
-										<button
-											className={`${styles.quantity} ${styles.addOrRemove}`}
-											onClick={() => removeFromCart(item.id, item.quantity)}
-										>
-											-
-										</button>
-										<span className={`${styles.quantity} ${styles.number}`}>
-											{item.quantity}
-										</span>
-										<button
-											className={`${styles.quantity} ${styles.addOrRemove}`}
-											onClick={() => addToCart(item.id)}
-										>
-											+
-										</button>
+					{items.length !== 0 && (
+						<div>
+							{items.map((item, index) => (
+								<div key={index} className={styles.item}>
+									<div className={styles.image}>
+										<Image
+											src={astro}
+											alt='product image'
+											width={150}
+											height={200}
+										/>
 									</div>
-									<button
-										className={styles.removeItem}
-										onClick={() => removeFromCheckout(item.id)}
-									>
-										Remove Item
-									</button>
+									<div className={styles.itemDescriptionLayout}>
+										<div className={styles.itemDescription}>
+											<span className={styles.itemName}>
+												{item.productName}
+											</span>
+											<span>By: {item.brand}</span>
+											<div className={styles.quantityLayout}>
+												<button
+													className={`${styles.quantity} ${styles.addOrRemove}`}
+													onClick={() => removeFromCart(item.id, item.quantity)}
+												>
+													-
+												</button>
+												<span className={`${styles.quantity} ${styles.number}`}>
+													{item.quantity}
+												</span>
+												<button
+													className={`${styles.quantity} ${styles.addOrRemove}`}
+													onClick={() => addToCart(item.id)}
+												>
+													+
+												</button>
+											</div>
+											<button
+												className={styles.removeItem}
+												onClick={() => removeFromCheckout(item.id)}
+											>
+												Remove Item
+											</button>
+										</div>
+										<div>
+											{currencyFormatter.format(item.price! * item.quantity)}
+										</div>
+									</div>
 								</div>
-								<div>
-									{currencyFormatter.format(item.price! * item.quantity)}
-								</div>
-							</div>
+							))}
 						</div>
-					))}
+					)}
 				</div>
 				<div className={styles.summary}>
 					<span className={styles.header}>Summary</span>
 					<div className={styles.costLayout}>
 						<span>Subtotal</span>
-						<span>{currencyFormatter.format(total)}</span>
+						<span>{totalCost}</span>
 					</div>
 					<div className={styles.costLayout}>
 						<span>Estimated Delivery & Handling</span>
@@ -101,7 +124,7 @@ const index = () => {
 					</div>
 					<div className={`${styles.costLayout} ${styles.totalCost}`}>
 						<span>Total</span>
-						<span>{currencyFormatter.format(total)}</span>
+						<span>{totalCost}</span>
 					</div>
 					<Link href={'/buy'} className={styles.link}>
 						Checkout

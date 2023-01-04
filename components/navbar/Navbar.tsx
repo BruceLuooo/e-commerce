@@ -11,14 +11,11 @@ import { getCheckoutItems } from '../../app/checkoutSlice';
 import useDebounce from '../../hooks/useDebounce';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
-import Cookies from 'js-cookie';
 
 function Navbar() {
 	const checkoutItems = useAppSelector(getCheckoutItems);
-	let totalItems = 0;
 
-	checkoutItems.forEach(item => (totalItems += item.quantity));
-
+	const [itemsInCart, setItemsInCart] = useState<number>(0);
 	const [popup, setPopup] = useState(false);
 	const [searchBarActive, setSearchBarActive] = useState(false);
 	const [searchItem, setSearchItem] = useState('');
@@ -29,6 +26,12 @@ function Navbar() {
 		const handler = () => setSearchBarActive(false);
 		addEventListener('click', handler);
 	}, []);
+
+	useEffect(() => {
+		let totalItems = 0;
+		checkoutItems.forEach(item => (totalItems += item.quantity));
+		setItemsInCart(totalItems);
+	}, [checkoutItems]);
 
 	useEffect(() => {
 		const findSearchedItems = async () => {
@@ -89,7 +92,11 @@ function Navbar() {
 					</div>
 					<Link href={'/cart'} className={styles.shoppingCartIcon}>
 						<Image src={cart} alt='cart Icon' height={32} width={32} />
-						{totalItems > 0 && <span>{totalItems}</span>}
+						<span
+							className={itemsInCart === 0 ? styles.inactive : styles.active}
+						>
+							{itemsInCart}
+						</span>
 					</Link>
 				</div>
 			</div>

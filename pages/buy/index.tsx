@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/buy/Buy.module.css';
 import astro from '../../public/astro.png';
 import Image from 'next/image';
@@ -20,15 +20,21 @@ interface userInfo {
 	phone: string;
 }
 
+interface productInformation {
+	price: number;
+	productName: string;
+	brand: string;
+	id: string;
+	quantity: number;
+}
+
 function index() {
 	const checkoutItems = useAppSelector(getCheckoutItems);
 	const { currencyFormatter } = useFormatCurrency();
-	let subtotal = 0;
+	// checkoutItems.forEach(item => (subtotal += item.price! * item.quantity));
 
-	checkoutItems.forEach(item => (subtotal += item.price! * item.quantity));
-
-	let tax = subtotal * 0.13;
-
+	const [total, setTotal] = useState(0);
+	const [items, setItems] = useState<productInformation[]>([]);
 	const [userInfo, setUserInfo] = useState<userInfo>({
 		name: '',
 		lastName: '',
@@ -40,8 +46,15 @@ function index() {
 		email: '',
 		phone: '',
 	});
-
 	const [nextPage, setNextPage] = useState(false);
+
+	useEffect(() => {
+		let subtotal = 0;
+		checkoutItems.forEach(item => (subtotal += item.price! * item.quantity));
+		setTotal(subtotal);
+		// @ts-ignore
+		setItems(checkoutItems);
+	}, [checkoutItems]);
 
 	return (
 		<div className={styles.buyContainer}>
@@ -50,11 +63,11 @@ function index() {
 					<span className={styles.header}>Order Summary</span>
 					<div className={styles.costSummary}>
 						<span>Subtotal</span>
-						<span>{currencyFormatter.format(subtotal)}</span>
+						<span>{currencyFormatter.format(total)}</span>
 					</div>
 					<div className={styles.costSummary}>
 						<span>Tax</span>
-						<span>{currencyFormatter.format(tax)}</span>
+						<span>{currencyFormatter.format(total * 0.13)}</span>
 					</div>
 					<div className={styles.costSummary}>
 						<span>Delivery/Shipping</span>
@@ -62,31 +75,35 @@ function index() {
 					</div>
 					<div className={`${styles.costSummary} ${styles.totalCost}`}>
 						<span>Total</span>
-						<span>{currencyFormatter.format(subtotal + tax)}</span>
+						<span>{currencyFormatter.format(total + total * 0.13)}</span>
 					</div>
 					<div className={styles.orderedItems}>
 						<span className={styles.arrivalDate}>
 							Arrives Tue, Jan 3 - Fri, Jan 20
 						</span>
-						{checkoutItems.map((item, index) => (
-							<div key={index} className={styles.item}>
-								<div className={styles.image}>
-									<Image
-										src={astro}
-										alt='product image'
-										width={160}
-										height={160}
-									/>
-								</div>
-								<div className={styles.productInfo}>
-									<span>{item.productName}</span>
-									<span>Quantity: {item.quantity}</span>
-									<span>
-										{currencyFormatter.format(item.price! * item.quantity)}
-									</span>
-								</div>
+						{items.length !== 0 && (
+							<div>
+								{checkoutItems.map((item, index) => (
+									<div key={index} className={styles.item}>
+										<div className={styles.image}>
+											<Image
+												src={astro}
+												alt='product image'
+												width={160}
+												height={160}
+											/>
+										</div>
+										<div className={styles.productInfo}>
+											<span>{item.productName}</span>
+											<span>Quantity: {item.quantity}</span>
+											<span>
+												{currencyFormatter.format(item.price! * item.quantity)}
+											</span>
+										</div>
+									</div>
+								))}
 							</div>
-						))}
+						)}
 					</div>
 				</div>
 				<div className={styles.userInformation}>

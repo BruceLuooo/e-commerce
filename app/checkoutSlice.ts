@@ -20,7 +20,7 @@ const initialState: initalState = {
 	cart: Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [],
 };
 
-var inHalfADay = 0.5;
+const inHalfADay = 0.5;
 
 export const checkoutSlice = createSlice({
 	name: 'checkout',
