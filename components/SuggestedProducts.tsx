@@ -2,15 +2,15 @@ import { getDocs, collection } from 'firebase/firestore';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { db } from '../firebase.config';
-import astro from '../public/astro.png';
 import styles from '../styles/SuggestedProducts.module.css';
 import useFormatCurrency from '../hooks/useFormatCurrency';
 import Link from 'next/link';
 
 interface productInformation {
-	price?: number;
-	productName?: string;
-	id?: string;
+	price: number;
+	productName: string;
+	id: string;
+	imgUrl: string;
 }
 
 function SuggestedProducts() {
@@ -27,6 +27,7 @@ function SuggestedProducts() {
 						price: doc.data().price,
 						productName: doc.data().productName,
 						id: doc.id,
+						imgUrl: doc.data().imgUrl,
 					});
 				});
 			});
@@ -60,7 +61,12 @@ function SuggestedProducts() {
 						className={styles.product}
 					>
 						<div className={styles.image}>
-							<Image src={astro} alt='product image' width={350} height={450} />
+							<Image
+								src={product.imgUrl[0]}
+								alt='product image'
+								width={350}
+								height={450}
+							/>
 						</div>
 						<div className={styles.productInformation}>
 							<span>{product.productName}</span>

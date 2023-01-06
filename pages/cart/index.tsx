@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/cart/Cart.module.css';
-import astro from '../../public/astro.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
@@ -18,6 +17,7 @@ interface productInformation {
 	brand: string;
 	id: string;
 	quantity: number;
+	imgUrl: string;
 }
 
 const index = () => {
@@ -63,7 +63,7 @@ const index = () => {
 								<div key={index} className={styles.item}>
 									<div className={styles.image}>
 										<Image
-											src={astro}
+											src={item.imgUrl}
 											alt='product image'
 											width={150}
 											height={200}

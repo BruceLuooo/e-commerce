@@ -1,18 +1,18 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/homePage/DisplayProducts.module.css';
-import cart from '../../public/shoppingCart.svg';
 import Link from 'next/link';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
-import astro from '../../public/astro.png';
+import { useAppDispatch } from '../../app/hooks';
+import { addToCheckout } from '../../app/checkoutSlice';
+import { useRouter } from 'next/router';
 
 interface productInformation {
-	description?: string;
 	price?: number;
-	productType?: string;
 	productName?: string;
 	brand?: string;
 	id?: string;
+	imgUrl: string;
 }
 
 type props = {
@@ -21,21 +21,57 @@ type props = {
 
 function DisplayProducts(product: props) {
 	const { currencyFormatter } = useFormatCurrency();
+	const router = useRouter();
+	const dispatch = useAppDispatch();
+
+	const [displayPopup, setDisplayPopup] = useState(false);
+	const buyNow = (product: productInformation) => {
+		const item = {
+			price: product.price,
+			productName: product.productName,
+			brand: product.brand,
+			quantity: 1,
+			id: product.id,
+			imgUrl: product.imgUrl[0],
+		};
+		dispatch(addToCheckout(item));
+		router.push('/buy');
+	};
 
 	return (
-		<Link
+		<div
 			className={styles.displayContainer}
-			href={`/product/${product.product.id}`}
+			onMouseOver={() => setDisplayPopup(true)}
+			onMouseOut={() => setDisplayPopup(false)}
 		>
-			<div className={styles.image}>
-				<Image src={astro} alt='shoppingcart' width={250} height={300} />
+			<Link href={`/product/${product.product.id}`}>
+				<div className={styles.image}>
+					{displayPopup ? (
+						<Image
+							src={product.product.imgUrl[1]}
+							alt='shoppingcart'
+							width={400}
+							height={500}
+						/>
+					) : (
+						<Image
+							src={product.product.imgUrl[0]}
+							alt='shoppingcart'
+							width={400}
+							height={500}
+						/>
+					)}
+				</div>
+				<div className={styles.information}>
+					<span className={styles.smallFont}>{product.product.brand}</span>
+					<span>{product.product.productName}</span>
+					<span>{currencyFormatter.format(product.product.price!)}</span>
+				</div>
+			</Link>
+			<div className={`${styles.buyNow} ${displayPopup && styles.active}`}>
+				<button onClick={() => buyNow(product.product)}>Buy Now</button>
 			</div>
-			<div className={styles.information}>
-				<span className={styles.smallFont}>{product.product.brand}</span>
-				<span>{product.product.productName}</span>
-				<span>{currencyFormatter.format(product.product.price!)}</span>
-			</div>
-		</Link>
+		</div>
 	);
 }
 

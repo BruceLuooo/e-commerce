@@ -21,7 +21,7 @@
 .header {
   font-size: 22px;
   line-height: 1.5;
-  font-weight: 500;
+  font-weight: 700;
 }
 .item {
   display: flex;
@@ -44,7 +44,7 @@
   line-height: 1.75;
 }
 .itemName {
-  font-weight: 500;
+  font-weight: 700;
 }
 .removeItem {
   margin-top: 48px;
@@ -89,7 +89,7 @@
   margin-bottom: 28px;
 }
 .totalCost > span:nth-child(2) {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .link {

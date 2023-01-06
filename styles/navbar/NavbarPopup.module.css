@@ -1,17 +1,15 @@
 .popupContainer {
   display: flex;
-  flex-direction: row;
   justify-content: center;
   width: 100%;
-  gap: 3rem;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  gap: 2.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   overflow: hidden;
 }
 
 .productList {
   display: flex;
-  flex-direction: column;
   gap: 1.5rem;
   animation: fadeinLine 0.5s forwards;
   transform: translateY(-10%);

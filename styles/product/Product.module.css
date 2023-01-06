@@ -20,6 +20,10 @@
   margin: 50px 0;
 }
 
+.swiperContainer {
+  max-width: 550px;
+  width: 100%;
+}
 .productImage{
   display: flex;
   justify-content: center;

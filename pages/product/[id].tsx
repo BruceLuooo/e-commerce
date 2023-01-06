@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { db } from '../../firebase.config';
 import styles from '../../styles/product/Product.module.css';
-import astro from '../../public/astro.png';
 import { useEffect, useState } from 'react';
 import OpenCloseArrow from '../../components/OpenCloseArrow';
 import SuggestedProducts from '../../components/SuggestedProducts';
@@ -12,6 +11,12 @@ import useFormatCurrency from '../../hooks/useFormatCurrency';
 import { useAppDispatch } from '../../app/hooks';
 import { addToCheckout } from '../../app/checkoutSlice';
 import { useRouter } from 'next/router';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper';
 
 interface Information {
 	params: {
@@ -30,6 +35,7 @@ interface Product {
 	brand: string;
 	productType: string;
 	id: string;
+	imgUrl: string;
 }
 
 export default function Product({ product }: Props) {
@@ -75,6 +81,7 @@ export default function Product({ product }: Props) {
 			brand: product.brand,
 			quantity: quantity,
 			id: product.id,
+			imgUrl: product.imgUrl[0],
 		};
 
 		setSideBarCart(true);
@@ -87,6 +94,7 @@ export default function Product({ product }: Props) {
 			brand: product.brand,
 			quantity: quantity,
 			id: product.id,
+			imgUrl: product.imgUrl,
 		};
 
 		dispatch(addToCheckout(item));
@@ -99,9 +107,32 @@ export default function Product({ product }: Props) {
 				<title>{`${product.productName} | Shop`}</title>
 			</Head>
 			<div className={styles.product}>
-				<div className={styles.productImage}>
-					<Image src={astro} alt='product Image' width={500} height={600} />
-				</div>
+				<Swiper
+					pagination={{
+						type: 'fraction',
+					}}
+					navigation={true}
+					loop={true}
+					modules={[Pagination, Navigation]}
+					className={styles.swiperContainer}
+				>
+					<SwiperSlide className={styles.productImage}>
+						<Image
+							src={product.imgUrl[0]}
+							alt='product Image'
+							width={550}
+							height={650}
+						/>
+					</SwiperSlide>
+					<SwiperSlide className={styles.productImage}>
+						<Image
+							src={product.imgUrl[1]}
+							alt='product Image'
+							width={550}
+							height={650}
+						/>
+					</SwiperSlide>
+				</Swiper>
 				<div className={styles.productInformation}>
 					<span className={styles.name}>{product.productName}</span>
 					<span className={styles.price}>
@@ -171,7 +202,7 @@ export default function Product({ product }: Props) {
 				<SideBarCart
 					totalCost={totalCost}
 					quantity={quantity}
-					product={product.productName}
+					product={product}
 				/>
 			</div>
 		</div>

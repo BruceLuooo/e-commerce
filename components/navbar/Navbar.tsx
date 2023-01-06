@@ -73,7 +73,7 @@ function Navbar() {
 					onMouseOver={() => setPopup(true)}
 					onMouseLeave={() => setPopup(false)}
 				>
-					Shop
+					Collection
 				</div>
 				<div className={`${styles.format} ${styles.right}  `}>
 					<div className={`${styles.searchBar} `} onClick={handleSearchBar}>

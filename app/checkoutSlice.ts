@@ -10,6 +10,7 @@ export interface productInformation {
 	brand?: string;
 	quantity: number;
 	id: string;
+	imgUrl: string;
 }
 
 interface initalState {

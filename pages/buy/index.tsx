@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/buy/Buy.module.css';
-import astro from '../../public/astro.png';
 import Image from 'next/image';
 import PaymentInformation from '../../components/buy/PaymentInformation';
 import ShippingInformation from '../../components/buy/ShippingInformation';
@@ -26,12 +25,12 @@ interface productInformation {
 	brand: string;
 	id: string;
 	quantity: number;
+	imgUrl: string;
 }
 
 function index() {
 	const checkoutItems = useAppSelector(getCheckoutItems);
 	const { currencyFormatter } = useFormatCurrency();
-	// checkoutItems.forEach(item => (subtotal += item.price! * item.quantity));
 
 	const [total, setTotal] = useState(0);
 	const [items, setItems] = useState<productInformation[]>([]);
@@ -87,7 +86,7 @@ function index() {
 									<div key={index} className={styles.item}>
 										<div className={styles.image}>
 											<Image
-												src={astro}
+												src={item.imgUrl}
 												alt='product image'
 												width={160}
 												height={160}

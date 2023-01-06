@@ -9,8 +9,7 @@ type Props = {
 
 function NavbarPopup({ setPopup }: Props) {
 	const router = useRouter();
-	const productType = ['Accessories', 'Cleanser', 'Mask', 'Moisturizer'];
-	const skinType = ['Oily', 'Dry', 'Normal', 'Combination'];
+	const productType = ['Sofa', 'Lamp', 'Wall Hooks', 'Coffee Table'];
 
 	const paramSearch = (sort: string) => {
 		const { query } = router;
@@ -30,29 +29,11 @@ function NavbarPopup({ setPopup }: Props) {
 	return (
 		<div className={styles.popupContainer}>
 			<div className={styles.productList}>
-				<span>Product Type</span>
-				<div>
-					{productType.map((product, index) => (
-						<div key={index} className={styles.products}>
-							<button onClick={() => onClick(product)}>{product}</button>
-						</div>
-					))}
-				</div>
-			</div>
-			<div className={styles.productList}>
-				<span>Skin Type</span>
-				<div>
-					{skinType.map((product, index) => (
-						<div key={index} className={styles.products}>
-							<Link
-								href={`/collections/${product}`}
-								onClick={() => setPopup(false)}
-							>
-								{product}
-							</Link>
-						</div>
-					))}
-				</div>
+				{productType.map((product, index) => (
+					<div key={index} className={styles.products}>
+						<button onClick={() => onClick(product)}>{product}</button>
+					</div>
+				))}
 			</div>
 		</div>
 	);

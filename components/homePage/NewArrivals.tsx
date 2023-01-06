@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../styles/homePage/NewArrivals.module.css';
 import DisplayProducts from './DisplayProducts';
 
@@ -9,6 +9,7 @@ interface productInformation {
 	productName?: string;
 	brand?: string;
 	id?: string;
+	collection?: string;
 }
 
 type props = {
@@ -16,9 +17,20 @@ type props = {
 };
 
 function NewArrivals(products: props) {
+	useEffect(() => {
+		const newArrivals = products.products.filter(
+			product => product.collection === 'newArrival',
+		);
+
+		// @ts-ignore
+		setItems(newArrivals);
+	}, []);
+
+	const [items, setItems] = useState([]);
+
 	return (
 		<div className={styles.carousel}>
-			{products.products.map((product, index) => (
+			{items.map((product, index) => (
 				<DisplayProducts key={index} product={product} />
 			))}
 		</div>

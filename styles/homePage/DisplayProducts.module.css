@@ -1,14 +1,14 @@
 .displayContainer {
   display: flex;
   flex-direction: column;
-  max-width: 20rem;
+  max-width: 400px;
   width: 100%;
   border: 1px solid #e3e3e3;
-  /* background-color: white; */
-  /* color: black; */
   cursor: pointer;
   text-decoration: none;
   margin-bottom: 2rem;
+  position: relative;
+  background-color: white;
 }
 
 .image {
@@ -27,4 +27,38 @@
 
 .smallFont {
   font-size: 12px;
+}
+
+.buyNow {
+  visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 40px;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: 0.2s;
+}
+.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.buyNow > button {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-color: #e3e3e3;
+  color: black;
+  border: none;
+  transition: 0.2s;
+}
+
+.buyNow > button:hover {
+  background-color: white;
 }

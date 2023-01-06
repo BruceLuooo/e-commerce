@@ -1,17 +1,21 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/cart/SideBarCart.module.css';
-import astro from '../../public/astro.png';
 import greenCheck from '../../public/greenCheck.svg';
 import Link from 'next/link';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
 import { useSelector } from 'react-redux';
 import { getCheckoutItems } from '../../app/checkoutSlice';
 
+interface productInformation {
+	productName: string;
+	imgUrl: string;
+}
+
 type Props = {
 	quantity: number;
 	totalCost: number;
-	product: string;
+	product: productInformation;
 };
 
 function SideBarCart({ quantity, totalCost, product }: Props) {
@@ -36,10 +40,15 @@ function SideBarCart({ quantity, totalCost, product }: Props) {
 			</div>
 			<div className={styles.item}>
 				<div>
-					<Image src={astro} alt='product image' width={150} height={200} />
+					<Image
+						src={product.imgUrl[0]}
+						alt='product image'
+						width={150}
+						height={200}
+					/>
 				</div>
 				<div className={styles.itemDescription}>
-					<span>{product}</span>
+					<span>{product.productName}</span>
 					<span>Quantity: {quantity}</span>
 					<span>{currencyFormatter.format(totalCost)}</span>
 				</div>

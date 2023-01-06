@@ -21,6 +21,7 @@ interface Product {
 	productType: string;
 	description: string;
 	id: string;
+	imgUrl: string;
 }
 
 type Props = {
@@ -34,7 +35,6 @@ function ViewProducts({ products, sortingOption }: Props) {
 
 	const selectedFilter = sortingOption;
 	const filterOptions = [
-		'Best Selling',
 		'Alphabetically, A-Z',
 		'Alphabetically, Z-A',
 		'Price, low to high',
@@ -125,19 +125,13 @@ function ViewProducts({ products, sortingOption }: Props) {
 export default ViewProducts;
 
 export async function getServerSideProps(context: any) {
-	const sort = context.query.sort || 'Best Selling';
+	const sort = context.query.sort || 'Alphabetically, A-Z';
 	const productType = context.query.productType;
 
 	const getCollection = collection(db, 'products');
 	let q;
 
-	if (sort === 'Best Selling') {
-		q = query(
-			getCollection,
-			where('productType', '==', `${productType}`),
-			orderBy('productName'),
-		);
-	} else if (sort === 'Alphabetically, A-Z') {
+	if (sort === 'Alphabetically, A-Z') {
 		q = query(
 			getCollection,
 			where('productType', '==', `${productType}`),

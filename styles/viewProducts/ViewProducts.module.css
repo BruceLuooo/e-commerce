@@ -36,10 +36,10 @@
 
 .filterButton {
   padding-right: 40px;
-  font-weight: 600;
+  font-weight: 700;
   margin-left: 12px;
   border: none;
-  background-color: white;
+  background-color: #e3dfd7;
   width: 140px;
   white-space: nowrap;
   transition: 0.3s;
@@ -60,7 +60,7 @@
   justify-content: flex-start;
   text-align: left;
   border: none;
-  background-color: white;
+  background-color: #e3dfd7;
   color: black;
   line-height: 20px;
   padding: 6px 40px 6px 30px;
@@ -89,7 +89,7 @@
   position: absolute;
   top: -15px;
   z-index: 2;
-  background-color: #ffffff;
+  background-color: #e3dfd7;
   width: 215px; 
   padding: 50px 0 12px 0;
   box-shadow: 0 6px 12px 1px #0000001f;
