@@ -9,7 +9,7 @@ type Props = {
 
 function NavbarPopup({ setPopup }: Props) {
 	const router = useRouter();
-	const productType = ['Sofa', 'Lamp', 'Wall Hooks', 'Coffee Table'];
+	const productType = ['Sofa', 'Lamp', 'Wall Deco', 'Coffee Table'];
 
 	const paramSearch = (sort: string) => {
 		const { query } = router;

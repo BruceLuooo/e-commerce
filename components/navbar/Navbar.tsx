@@ -12,6 +12,13 @@ import useDebounce from '../../hooks/useDebounce';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
+interface searchResults {
+	brand: string;
+	id: string;
+	imgUrl: string;
+	productName: string;
+}
+
 function Navbar() {
 	const checkoutItems = useAppSelector(getCheckoutItems);
 
@@ -19,7 +26,11 @@ function Navbar() {
 	const [popup, setPopup] = useState(false);
 	const [searchBarActive, setSearchBarActive] = useState(false);
 	const [searchItem, setSearchItem] = useState('');
-	const [searchResults, setSearchResults] = useState([]);
+	const [error, setError] = useState({
+		active: false,
+		msg: ``,
+	});
+	const [searchResults, setSearchResults] = useState<searchResults[]>([]);
 	const debounce = useDebounce(searchItem, 300);
 
 	useEffect(() => {
@@ -34,23 +45,45 @@ function Navbar() {
 	}, [checkoutItems]);
 
 	useEffect(() => {
-		const findSearchedItems = async () => {
+		let results: any = [];
+		const findSearchedItems = async (searchItem: string) => {
+			const lowercase = searchItem.toLowerCase();
 			const q = query(
 				collection(db, 'products'),
-				where('search', 'array-contains-any', [
-					'c',
-					'cl',
-					'clean',
-					'a',
-					'as',
-					'astronomical',
-				]),
+				where('search', 'array-contains-any', [`${lowercase}`]),
 			);
 			const querySnapshot = await getDocs(q);
-			querySnapshot.forEach(doc => {});
+
+			if (querySnapshot.docs.length === 0) {
+				setSearchResults([]);
+				return setError({
+					active: true,
+					msg: `Sorry, we couldn't find any results
+        `,
+				});
+			} else {
+				querySnapshot.forEach(doc => {
+					results.push({
+						brand: doc.data().brand,
+						id: doc.id,
+						imgUrl: doc.data().imgUrl[0],
+						productName: doc.data().productName,
+					});
+				});
+				setError({
+					active: false,
+					msg: ``,
+				});
+				setSearchResults(results);
+			}
 		};
 
-		findSearchedItems();
+		if (searchItem === '') {
+			setError({ active: false, msg: '' });
+			setSearchResults([]);
+		} else {
+			findSearchedItems(searchItem);
+		}
 	}, [debounce]);
 
 	const handleSearchBar = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -63,7 +96,7 @@ function Navbar() {
 			<div className={styles.navbar}>
 				<div className={styles.left}>
 					<Link href={'/'} className={`${styles.format} `}>
-						<div>Logo</div>
+						<div>MAISON KOBI</div>
 					</Link>
 				</div>
 				<div
@@ -105,30 +138,23 @@ function Navbar() {
 					searchBarActive && styles.searchResultsVisible
 				}`}
 			>
-				{/* Use Map to map through results */}
-				<Link href={'/viewProducts/Cleanser'}>
-					<div className={styles.searchResult}>
-						<Image src={astro} alt='product picture' width={90} height={100} />
-						<div className={styles.productInfo}>
-							<div>Low pH Good Morning Gel Cleanser</div>
-							<div>Versace Cleanser</div>
-							<div>$14.00</div>
+				{searchResults.map((results, index) => (
+					<Link key={index} href={`/product/${results.id}`}>
+						<div className={styles.searchResult}>
+							<Image
+								src={results.imgUrl}
+								alt='product picture'
+								width={90}
+								height={100}
+							/>
+							<div className={styles.productInfo}>
+								<div>{results.productName}</div>
+								<div>{results.brand}</div>
+							</div>
 						</div>
-					</div>
-				</Link>
-				<Link href={'/viewProducts/Cleanser'}>
-					<div className={styles.searchResult}>
-						<Image src={astro} alt='product picture' width={90} height={100} />
-						<div className={styles.productInfo}>
-							<div>Low pH Good Morning Gel Cleanser</div>
-							<div>Versace Cleanser</div>
-							<div>$14.00</div>
-						</div>
-					</div>
-				</Link>
-				<Link href={'/search'} className={styles.button}>
-					See All
-				</Link>
+					</Link>
+				))}
+				{error.active && <div className={styles.button}>{error.msg}</div>}
 			</div>
 			<div
 				onMouseOver={() => setPopup(true)}

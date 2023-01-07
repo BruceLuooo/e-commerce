@@ -57,7 +57,9 @@ const index = () => {
 			<div className={styles.cartLayout}>
 				<div className={styles.items}>
 					<span className={styles.header}>Bag</span>
-					{items.length !== 0 && (
+					{items.length === 0 ? (
+						<div>Your Bag Is Empty</div>
+					) : (
 						<div>
 							{items.map((item, index) => (
 								<div key={index} className={styles.item}>
@@ -126,7 +128,12 @@ const index = () => {
 						<span>Total</span>
 						<span>{totalCost}</span>
 					</div>
-					<Link href={'/buy'} className={styles.link}>
+					<Link
+						href={'/buy'}
+						className={`${styles.link} ${
+							items.length === 0 && styles.disabled
+						}`}
+					>
 						Checkout
 					</Link>
 					<Link href={'/'} className={styles.link}>

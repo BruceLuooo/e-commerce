@@ -22,6 +22,7 @@ interface Product {
 	description: string;
 	id: string;
 	imgUrl: string;
+	collection?: string;
 }
 
 type Props = {
@@ -113,7 +114,7 @@ function ViewProducts({ products, sortingOption }: Props) {
 			</div>
 			<div className={styles.viewProductsLayout}>
 				{products.map((product, index) => (
-					<div key={index}>
+					<div key={index} className={styles.product}>
 						<DisplayProducts product={product} />
 					</div>
 				))}

@@ -13,6 +13,7 @@ interface productInformation {
 	brand?: string;
 	id?: string;
 	imgUrl: string;
+	collection?: string;
 }
 
 type props = {
@@ -40,7 +41,7 @@ function DisplayProducts(product: props) {
 
 	return (
 		<div
-			className={styles.displayContainer}
+			className={`${styles.displayContainer} `}
 			onMouseOver={() => setDisplayPopup(true)}
 			onMouseOut={() => setDisplayPopup(false)}
 		>

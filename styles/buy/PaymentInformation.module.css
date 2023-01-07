@@ -27,6 +27,7 @@
   width: 100%;
   margin-bottom: 24px;
   margin-top: 8px;
+  outline: none;
 }
 .inputLabel{
   position: absolute;
@@ -46,9 +47,17 @@
   line-height: 36px;
   font-size: 18px;
   border-radius: 4px;
-  border: none;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
   cursor: pointer;
   margin-bottom: 8px;
+  transition: 0.2s;
+}
+
+.button:hover{
+  color: white;
+  background-color: black;
 }
 
 .error {
@@ -60,7 +69,7 @@
   padding-left: 0;
   position: absolute;
   font-size: 12px;
-  background-color: white;
+  background-color: white;;
   color: black;
   border: none;
   cursor: pointer;

@@ -1,7 +1,7 @@
 .viewProductContainer {
   display: flex;
   flex-direction: column;
-  max-width: 1380px;
+  max-width: 1180px;
   width: 100%;
   margin: auto;
   margin-top: 80px;
@@ -21,9 +21,18 @@
 }
 
 .viewProductsLayout {
-  margin-top: 12px;
+  margin-top: 70px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.viewProductsLayout > div:nth-child(2n) {
+  margin-top: 80px;
+}
+
+.product {
+  display: flex;
+  justify-content: center;
 }
 
 .dropdownContainer {
@@ -54,6 +63,7 @@
   display: flex;
   font-size: 16px;
   justify-content: flex-end;
+  cursor: pointer;
 }
 .filterOptions{
   display: flex;
@@ -64,9 +74,10 @@
   color: black;
   line-height: 20px;
   padding: 6px 40px 6px 30px;
+  transition: 0.2s;
 }
 .filterOptions:hover{
-  background-color: lightgrey;
+  background-color: white;
 }
 .filterArrow {
   position: absolute;

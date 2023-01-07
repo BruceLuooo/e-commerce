@@ -8,6 +8,10 @@
   margin: auto;
 }
 
+.topImage {
+  margin-top: 80px;
+}
+
 .trendingCarousel {
   display: flex;
   justify-content: center;

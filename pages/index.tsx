@@ -39,17 +39,16 @@ export default function Home({ products }: Props) {
 				<title>Shop | Home</title>
 				{/* <link rel='icon' type='image/x-icon' href='/static/favicon.ico' /> */}
 			</Head>
-			<div>
-				<h1>The Modern Design</h1>
+			<div className={styles.topImage}>
 				<Image
 					src={homepageImage}
 					alt='home-page image'
 					width={1350}
-					height={300}
+					height={400}
 				/>
 			</div>
 			<div>
-				<h1>The Sinclair Collection</h1>
+				<h1>&#8709; The Sinclair Collection</h1>
 				<div className={styles.lookbookLayout}>
 					<div>
 						<Image

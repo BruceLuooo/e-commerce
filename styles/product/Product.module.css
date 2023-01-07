@@ -57,15 +57,17 @@
   width: fit-content;
   padding: 0;
   border: none;
-  background-color: white;
+  background-color: unset;
   color: grey;
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: lightgrey;
   text-underline-offset: 4px;
+  transition: 0.2s;
 }
 .brand:hover {
   text-decoration-color: black;
+  color: black;
 }
 
 .thinLine {
