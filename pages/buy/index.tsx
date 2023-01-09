@@ -6,6 +6,8 @@ import ShippingInformation from '../../components/buy/ShippingInformation';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
 import { useAppSelector } from '../../app/hooks';
 import { getCheckoutItems } from '../../app/checkoutSlice';
+import Cookies from 'js-cookie';
+import Head from 'next/head';
 
 interface userInfo {
 	name: string;
@@ -55,8 +57,17 @@ function index() {
 		setItems(checkoutItems);
 	}, [checkoutItems]);
 
+	// useEffect(() => {
+	//   Cookies.set('checkout', JSON.stringify(), {
+	//     expires: 0.5,
+	//   });
+	// })
+
 	return (
 		<div className={styles.buyContainer}>
+			<Head>
+				<title>Maison Kobe | Buy</title>
+			</Head>
 			<div className={styles.buyLayout}>
 				<div className={styles.orderSummary}>
 					<span className={styles.header}>Order Summary</span>

@@ -10,6 +10,7 @@ import {
 	removeQuantity,
 	removeItem,
 } from '../../app/checkoutSlice';
+import Head from 'next/head';
 
 interface productInformation {
 	price: number;
@@ -54,6 +55,9 @@ const index = () => {
 
 	return (
 		<div className={styles.cartContainer}>
+			<Head>
+				<title>Maison Kobe | Cart</title>
+			</Head>
 			<div className={styles.cartLayout}>
 				<div className={styles.items}>
 					<span className={styles.header}>Bag</span>
@@ -136,7 +140,7 @@ const index = () => {
 					>
 						Checkout
 					</Link>
-					<Link href={'/'} className={styles.link}>
+					<Link href={'/viewCollection/all?page=1'} className={styles.link}>
 						Continue Shopping
 					</Link>
 				</div>

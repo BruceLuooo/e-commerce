@@ -9,7 +9,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import homepageImage from '../public/furniture/homepage.png';
 import lookbookOne from '../public/furniture/lookBookOne.jpeg';
-import lookbookTwo from '../public/furniture/lookBook.jpeg';
+import lookbookTwo from '../public/furniture/lookBookTwo.jpeg';
 import Image from 'next/image';
 
 interface productInformation {
@@ -36,8 +36,7 @@ export default function Home({ products }: Props) {
 	return (
 		<div className={styles.container}>
 			<Head>
-				<title>Shop | Home</title>
-				{/* <link rel='icon' type='image/x-icon' href='/static/favicon.ico' /> */}
+				<title>Maison Kobe | Home</title>
 			</Head>
 			<div className={styles.topImage}>
 				<Image
@@ -69,7 +68,7 @@ export default function Home({ products }: Props) {
 							</em>
 						</p>
 						<Image
-							src={lookbookOne}
+							src={lookbookTwo}
 							alt='modern design'
 							width={500}
 							height={500}

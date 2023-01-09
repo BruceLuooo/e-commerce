@@ -111,3 +111,25 @@
   visibility: visible;
   opacity: 1;
 }
+
+.page{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.numberOfPages {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+.pageButton {
+  background-color: unset;
+  border: none;
+  color: black;
+  font-size: 18px;
+  cursor: pointer;
+}
+.pageSelectedActive {
+  color: rgb(95, 95, 95);
+  cursor:text;
+}

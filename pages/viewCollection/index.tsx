@@ -7,12 +7,7 @@ import { MouseEventHandler, useEffect, useState } from 'react';
 import Image from 'next/image';
 import arrow from '../../public/arrow.svg';
 import { useRouter } from 'next/router';
-
-interface Paths {
-	params: {
-		id: string;
-	};
-}
+import Head from 'next/head';
 
 interface Product {
 	price: number;
@@ -30,7 +25,7 @@ type Props = {
 	sortingOption: string;
 };
 
-function ViewProducts({ products, sortingOption }: Props) {
+function ViewCollection({ products, sortingOption }: Props) {
 	const router = useRouter();
 	const { query } = router;
 
@@ -74,6 +69,9 @@ function ViewProducts({ products, sortingOption }: Props) {
 
 	return (
 		<div className={styles.viewProductContainer}>
+			<Head>
+				<title>Maison Kobe | Collection</title>
+			</Head>
 			<div className={styles.headerLayout}>
 				<div className={styles.header}>{header}</div>
 				<div className={styles.dropdownContainer}>
@@ -123,7 +121,7 @@ function ViewProducts({ products, sortingOption }: Props) {
 	);
 }
 
-export default ViewProducts;
+export default ViewCollection;
 
 export async function getServerSideProps(context: any) {
 	const sort = context.query.sort || 'Alphabetically, A-Z';

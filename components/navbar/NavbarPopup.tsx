@@ -16,7 +16,7 @@ function NavbarPopup({ setPopup }: Props) {
 		query.productType = sort;
 
 		router.push({
-			pathname: `/viewProducts`,
+			pathname: `/viewCollection`,
 			query: query,
 		});
 	};
@@ -34,6 +34,11 @@ function NavbarPopup({ setPopup }: Props) {
 						<button onClick={() => onClick(product)}>{product}</button>
 					</div>
 				))}
+				<div className={styles.products}>
+					<button onClick={() => router.push('/viewCollection/all?page=1')}>
+						View All
+					</button>
+				</div>
 			</div>
 		</div>
 	);

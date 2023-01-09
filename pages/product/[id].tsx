@@ -138,7 +138,7 @@ export default function Product({ product }: Props) {
 					<span className={styles.price}>
 						{currencyFormatter.format(product.price)}
 					</span>
-					<button className={styles.brand}>{product.brand}</button>
+					<span className={styles.brand}>{product.brand}</span>
 					<hr className={styles.thinLine} />
 					<div className={styles.quantityContainer}>
 						<span>Quantity</span>
