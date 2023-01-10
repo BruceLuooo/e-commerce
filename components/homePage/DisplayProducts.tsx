@@ -45,32 +45,39 @@ function DisplayProducts(product: props) {
 			onMouseOver={() => setDisplayPopup(true)}
 			onMouseOut={() => setDisplayPopup(false)}
 		>
-			<Link href={`/product/${product.product.id}`}>
-				<div className={styles.image}>
-					{displayPopup ? (
-						<Image
-							src={product.product.imgUrl[1]}
-							alt='shoppingcart'
-							width={400}
-							height={500}
-						/>
-					) : (
-						<Image
-							src={product.product.imgUrl[0]}
-							alt='shoppingcart'
-							width={400}
-							height={500}
-						/>
-					)}
-				</div>
-				<div className={styles.information}>
-					<span className={styles.smallFont}>{product.product.brand}</span>
-					<span>{product.product.productName}</span>
-					<span>{currencyFormatter.format(product.product.price!)}</span>
-				</div>
-			</Link>
-			<div className={`${styles.buyNow} ${displayPopup && styles.active}`}>
-				<button onClick={() => buyNow(product.product)}>Buy Now</button>
+			<div className={styles.container}>
+				<Link href={`/product/${product.product.id}`}>
+					<div className={styles.image}>
+						{displayPopup ? (
+							<Image
+								src={product.product.imgUrl[1]}
+								alt='shoppingcart'
+								className={styles.productImage}
+								width={400}
+								height={500}
+							/>
+						) : (
+							<Image
+								src={product.product.imgUrl[0]}
+								alt='shoppingcart'
+								className={styles.productImage}
+								width={400}
+								height={500}
+							/>
+						)}
+					</div>
+					<div className={styles.information}>
+						<span className={styles.smallFont}>{product.product.brand}</span>
+						<span>{product.product.productName}</span>
+						<span>{currencyFormatter.format(product.product.price!)}</span>
+					</div>
+				</Link>
+				<button
+					className={`${styles.buyNow} ${displayPopup && styles.active}`}
+					onClick={() => buyNow(product.product)}
+				>
+					Buy Now
+				</button>
 			</div>
 		</div>
 	);

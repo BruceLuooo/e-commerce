@@ -60,14 +60,13 @@ function SuggestedProducts() {
 						key={index}
 						className={styles.product}
 					>
-						<div className={styles.image}>
-							<Image
-								src={product.imgUrl[0]}
-								alt='product image'
-								width={350}
-								height={450}
-							/>
-						</div>
+						<Image
+							src={product.imgUrl[0]}
+							alt='product image'
+							className={styles.image}
+							width={350}
+							height={450}
+						/>
 						<div className={styles.productInformation}>
 							<span>{product.productName}</span>
 							<span>{currencyFormatter.format(product.price!)}</span>

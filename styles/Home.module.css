@@ -3,21 +3,50 @@
   flex-direction: column;
   align-items: center;
   padding: 0 2rem;
-  max-width: 1350px;
+  max-width: 1850px;
   width: 100%;
   margin: auto;
 }
 
 .topImage {
-  margin-top: 80px;
+  max-width: 1350px;
+  max-height: 400px;
+  width: 100%;
+  height: 100%;
 }
 
+.middleSection{
+  display: flex;
+  flex-direction: column;
+}
+
+.lookbookLayout {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  padding-left: 80px;
+}
+.lookBookOne{
+  max-width: 550px;
+  max-height: 600px;
+  width: 100%;
+}
+.lookBookTwo{
+  max-width: 500px;
+  max-height: 500px;
+  width: 100%;
+}
+.rightSide {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.rightSide > p {
+  max-width: 600px;
+}
 .trendingCarousel {
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin: auto;
-  margin-top: 2rem;
 }
 
 .header {
@@ -27,14 +56,62 @@
   line-height: 1.6;
 }
 
-.lookbookLayout {
-  display: flex;
-  justify-content: center;
-  gap: 4rem;
-  padding-left: 30px;
+
+@media screen and (max-width: 1283px) {
+  .lookbookLayout {
+    gap: 2rem;
+    padding-left: 0px;
+  }
+  .lookBookOne{
+    max-height: 400px;
+    max-width: 450px;
+  }
+  .lookBookTwo{
+    max-width: 450px;
+    max-height: 400px;
+    display: flex;
+    justify-content: center;
+  }
+  .rightSide {
+    width: 550px;
+  }
+  .rightSide > p {
+    max-width: 500px;
+    min-width: 350px;
+  }
+  .header {
+    margin-top: 4rem;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.6;
+  }
 }
-.rightSide {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+
+@media screen and (max-width: 768px) {
+  .topImage {
+    display: none;
+  }
+  .rightSide {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 2rem;
+    max-width: 550px;
+    width: 100%;
+  }
+  .lookBookOne{
+    display: none;
+  }
+  .lookBookTwo{
+    max-width: 550px;
+    width: 100%;
+  }
+  .middleSection > h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 26px;
+  }  
+  .header {
+    font-size: 26px;
+  }
 }

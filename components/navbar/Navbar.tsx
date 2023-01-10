@@ -5,7 +5,6 @@ import cart from '../../public/shoppingCart.svg';
 import search from '../../public/search.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import astro from '../../public/astro.png';
 import { useAppSelector } from '../../app/hooks';
 import { getCheckoutItems } from '../../app/checkoutSlice';
 import useDebounce from '../../hooks/useDebounce';

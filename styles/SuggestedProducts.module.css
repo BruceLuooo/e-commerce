@@ -33,7 +33,30 @@
 .image {
   opacity: 1;
   transition: 0.3s;
+  max-width: 350px;
+  width: 100%;
 }
 .image:hover{
-  opacity: 0.8;
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 1283px) {
+  .productContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .image {
+    opacity: 1;
+    transition: 0.3s;
+    max-width: 450px;
+    width: 100%;
+    height: auto;
+  }
+  .productContainer {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
 }

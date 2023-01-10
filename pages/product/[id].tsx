@@ -120,6 +120,7 @@ export default function Product({ product }: Props) {
 						<Image
 							src={product.imgUrl[0]}
 							alt='product Image'
+							className={styles.image}
 							width={550}
 							height={650}
 						/>
@@ -128,6 +129,7 @@ export default function Product({ product }: Props) {
 						<Image
 							src={product.imgUrl[1]}
 							alt='product Image'
+							className={styles.image}
 							width={550}
 							height={650}
 						/>

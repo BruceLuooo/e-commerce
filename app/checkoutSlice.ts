@@ -63,11 +63,22 @@ export const checkoutSlice = createSlice({
 				expires: inHalfADay,
 			});
 		},
+		addCartFromLink: (state, action) => {
+			state.cart = action.payload;
+			Cookies.set('cart', JSON.stringify(state.cart), {
+				expires: inHalfADay,
+			});
+		},
 	},
 });
 
-export const { addQuantity, removeQuantity, removeItem, addToCheckout } =
-	checkoutSlice.actions;
+export const {
+	addQuantity,
+	removeQuantity,
+	removeItem,
+	addToCheckout,
+	addCartFromLink,
+} = checkoutSlice.actions;
 
 export const getCheckoutItems = (state: RootState) => state.checkout.cart;
 

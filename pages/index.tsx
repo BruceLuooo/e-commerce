@@ -38,25 +38,21 @@ export default function Home({ products }: Props) {
 			<Head>
 				<title>Maison Kobe | Home</title>
 			</Head>
-			<div className={styles.topImage}>
+			<div>
 				<Image
 					src={homepageImage}
 					alt='home-page image'
-					width={1350}
-					height={400}
+					className={styles.topImage}
 				/>
 			</div>
-			<div>
+			<div className={styles.middleSection}>
 				<h1>&#8709; The Sinclair Collection</h1>
 				<div className={styles.lookbookLayout}>
-					<div>
-						<Image
-							src={lookbookOne}
-							alt='modern design'
-							width={550}
-							height={600}
-						/>
-					</div>
+					<Image
+						src={lookbookOne}
+						alt='modern design'
+						className={styles.lookBookOne}
+					/>
 					<div className={styles.rightSide}>
 						<p>
 							<em>
@@ -70,8 +66,7 @@ export default function Home({ products }: Props) {
 						<Image
 							src={lookbookTwo}
 							alt='modern design'
-							width={500}
-							height={500}
+							className={styles.lookBookTwo}
 						/>
 					</div>
 				</div>

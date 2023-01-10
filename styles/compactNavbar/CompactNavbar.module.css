@@ -1,0 +1,79 @@
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  width: 100%;
+  background-color: #635136;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.hamburger {
+  cursor: pointer;
+  z-index: 100;
+}
+
+.menuContainer {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  background-color: white;
+  width: 220px;
+  left: 0;
+  transform: translate(-180px, 8px);
+  padding: 1rem 0;
+  border-radius: 6px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.menuSelection {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  padding: 0.5rem 1rem;
+}
+
+.menuSelection > button {
+  color: black;
+  background-color: white;
+  border: none;
+  text-align: start;
+  padding: 1rem;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 6px;
+}
+
+.menuSelection > button:hover {
+  background-color: #635136;
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.link{
+  padding: 1rem;
+  background-color: white;
+  transition: 0.2s;
+  border-radius: 6px;
+}
+.link:hover {
+  background-color: #635136;
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+

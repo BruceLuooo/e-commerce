@@ -10,6 +10,8 @@
   flex-direction: row;
   max-width: 1100px;
   width: 100%;
+  margin-bottom: 2rem;
+
 }
 
 .items {
@@ -136,7 +138,40 @@
   color: white;
 }
 
+.checkout {
+  font-size: 16px;
+}
+
 .disabled {
   pointer-events: none;
   background-color: grey;
+}
+
+@media screen and (max-width: 1283px) {
+  .cartLayout {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+  .items {
+    max-width: 80%;
+  }
+  .summary {
+    max-width: 50%;
+  }
+  .itemDescriptionLayout {
+    gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .items {
+    max-width: 95%;
+  }
+  .costLayout {
+    gap: 1rem;
+  }
+  .summary {
+    max-width: 80%;
+  }
 }

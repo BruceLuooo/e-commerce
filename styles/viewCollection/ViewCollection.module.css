@@ -5,6 +5,7 @@
   width: 100%;
   margin: auto;
   margin-top: 80px;
+  padding: 0 2rem;
 }
 
 .headerLayout{
@@ -21,9 +22,10 @@
 }
 
 .viewProductsLayout {
-  margin-top: 70px;
+  padding-top: 70px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
 .viewProductsLayout > div:nth-child(2n) {
@@ -49,7 +51,7 @@
   margin-left: 12px;
   border: none;
   background-color: #e3dfd7;
-  width: 140px;
+  width: 170px;
   white-space: nowrap;
   transition: 0.3s;
   color: black;
@@ -82,7 +84,7 @@
 .filterArrow {
   position: absolute;
   right: 5px;
-  top: 0;
+  top: -4px;
   transform: rotate(0deg);
   transform-origin: center;
   transition: 0.3s;
@@ -90,6 +92,7 @@
 
 .filterOpen {
   transform: rotate(-180deg);
+  top: -6px;
   transition: 0.3s;
 }
 
@@ -104,6 +107,7 @@
   width: 215px; 
   padding: 50px 0 12px 0;
   box-shadow: 0 6px 12px 1px #0000001f;
+  border-radius: 6px;
   opacity: 0;
   transition: 0.5s;
 }
@@ -132,4 +136,22 @@
 .pageSelectedActive {
   color: rgb(95, 95, 95);
   cursor:text;
+}
+
+@media screen and (max-width: 1283px) {
+  .viewProductsLayout > div:nth-child(2n) {
+    margin-top: unset;
+  }
+}
+
+@media screen and (max-width: 768px) {
+.dropdownContainer {
+  margin-right: unset;
+}
+.header {
+  font-size: 20px;
+}
+.viewProductsLayout {
+  padding-top: 30px;
+}
 }

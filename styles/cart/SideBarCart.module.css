@@ -42,3 +42,9 @@
   background-color: black;
   color: white;
 }
+
+@media screen and (max-width: 855px) {
+  .sidebarContainer{
+    width: 300px;
+  }
+}

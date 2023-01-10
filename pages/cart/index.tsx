@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { doc, setDoc } from 'firebase/firestore';
 import styles from '../../styles/cart/Cart.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
@@ -11,6 +13,8 @@ import {
 	removeItem,
 } from '../../app/checkoutSlice';
 import Head from 'next/head';
+import { uuid } from 'uuidv4';
+import { db } from '../../firebase.config';
 
 interface productInformation {
 	price: number;
@@ -25,6 +29,7 @@ const index = () => {
 	const checkoutItems = useAppSelector(getCheckoutItems);
 	const dispatch = useAppDispatch();
 	const { currencyFormatter } = useFormatCurrency();
+	const router = useRouter();
 
 	const [totalCost, setTotalCost] = useState<string>(
 		currencyFormatter.format(0),
@@ -32,9 +37,9 @@ const index = () => {
 	const [items, setItems] = useState<productInformation[]>([]);
 
 	useEffect(() => {
-		let total = 0;
-		checkoutItems.forEach(item => (total += item.price! * item.quantity));
-		setTotalCost(currencyFormatter.format(total));
+		let totalAmount = 0;
+		checkoutItems.forEach(item => (totalAmount += item.price! * item.quantity));
+		setTotalCost(currencyFormatter.format(totalAmount));
 		// @ts-ignore
 		setItems(checkoutItems);
 	}, [checkoutItems]);
@@ -51,6 +56,19 @@ const index = () => {
 	};
 	const removeFromCheckout = (id: string) => {
 		dispatch(removeItem(id));
+	};
+
+	const goToCheckout = async () => {
+		let totalAmount = 0;
+		checkoutItems.forEach(item => (totalAmount += item.price! * item.quantity));
+		const setId = uuid();
+		const data = {
+			itemsInCart: items,
+			total: totalAmount,
+		};
+		await setDoc(doc(db, 'userCheckoutCart', `${setId}`), data);
+
+		router.push(`/checkout/${setId}`);
 	};
 
 	return (
@@ -132,14 +150,14 @@ const index = () => {
 						<span>Total</span>
 						<span>{totalCost}</span>
 					</div>
-					<Link
-						href={'/buy'}
-						className={`${styles.link} ${
+					<button
+						onClick={goToCheckout}
+						className={`${styles.link} ${styles.checkout} ${
 							items.length === 0 && styles.disabled
 						}`}
 					>
 						Checkout
-					</Link>
+					</button>
 					<Link href={'/viewCollection/all?page=1'} className={styles.link}>
 						Continue Shopping
 					</Link>

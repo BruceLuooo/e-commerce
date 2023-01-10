@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DisplayProducts from '../../../components/homePage/DisplayProducts';
 import { db } from '../../../firebase.config';
-import styles from '../../../styles/viewProducts/ViewProducts.module.css';
+import styles from '../../../styles/viewCollection/ViewCollection.module.css';
 import Image from 'next/image';
 import arrow from '../../../public/arrow.svg';
 import Head from 'next/head';

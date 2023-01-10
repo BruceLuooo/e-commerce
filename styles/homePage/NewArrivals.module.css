@@ -2,7 +2,14 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 0 8rem;
   gap: 1rem;
   padding: 1rem;
+}
+
+
+@media screen and (max-width: 1283px) {
+  .carousel{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
