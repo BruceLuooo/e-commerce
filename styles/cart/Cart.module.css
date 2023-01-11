@@ -166,10 +166,16 @@
   .items {
     max-width: 95%;
   }
+  .itemDescriptionLayout {
+    flex-direction: column;
+  }
   .costLayout {
     gap: 1rem;
   }
   .summary {
     max-width: 80%;
+  }
+  .removeItem {
+    margin-top: 18px;
   }
 }
