@@ -33,7 +33,7 @@ type Props = {
 	totalPages: number;
 };
 
-function viewAllCollection({ products, sortingOption, totalPages }: Props) {
+function ViewAllCollection({ products, sortingOption, totalPages }: Props) {
 	const router = useRouter();
 	const { query } = router;
 
@@ -65,7 +65,7 @@ function viewAllCollection({ products, sortingOption, totalPages }: Props) {
 	);
 }
 
-export default viewAllCollection;
+export default ViewAllCollection;
 
 export async function getServerSideProps(context: any) {
 	const sort = context.query.sort || 'Alphabetically, A-Z';

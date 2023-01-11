@@ -15,7 +15,7 @@ interface productInformation {
 	imgUrl: string;
 }
 
-const index = () => {
+const Cart = () => {
 	const checkoutItems = useAppSelector(getCheckoutItems);
 
 	const [totalCost, setTotalCost] = useState<number>(0);
@@ -49,4 +49,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Cart;

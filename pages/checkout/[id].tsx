@@ -43,7 +43,7 @@ type Props = {
 	checkoutInformation: checkout;
 };
 
-function index({ checkoutInformation }: Props) {
+function Checkout({ checkoutInformation }: Props) {
 	const { currencyFormatter } = useFormatCurrency();
 	const router = useRouter();
 
@@ -142,7 +142,7 @@ function index({ checkoutInformation }: Props) {
 	);
 }
 
-export default index;
+export default Checkout;
 
 export async function getServerSideProps(context: any) {
 	const { id } = context.params;
