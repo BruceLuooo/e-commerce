@@ -154,4 +154,10 @@
 .viewProductsLayout {
   padding-top: 30px;
 }
+.filterButton {
+  width: 200px;
+}
+.filterButtonWide{
+  width: 200px;
+}
 }
