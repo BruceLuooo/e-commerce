@@ -8,13 +8,13 @@ import {
 	startAfter,
 } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import DisplayProducts from '../../../components/homePage/DisplayProducts';
 import { db } from '../../../firebase.config';
 import styles from '../../../styles/viewCollection/ViewCollection.module.css';
-import Image from 'next/image';
-import arrow from '../../../public/arrow.svg';
 import Head from 'next/head';
+import DropdownFilter from '../../../components/viewCollection/DropdownFilter';
+import TotalPages from '../../../components/viewCollection/TotalPages';
 
 interface Product {
 	price: number;
@@ -42,48 +42,6 @@ function viewAllCollection({ products, sortingOption, totalPages }: Props) {
 	});
 
 	const selectedFilter = sortingOption;
-	const filterOptions = [
-		'Alphabetically, A-Z',
-		'Alphabetically, Z-A',
-		'Price, low to high',
-		'Price, high to low',
-	];
-	const [openFilter, setOpenFilter] = useState<boolean>(false);
-	const [currentPage, setCurrentPage] = useState(1);
-
-	useEffect(() => {
-		const handler = () => setOpenFilter(false);
-
-		addEventListener('click', handler);
-	});
-
-	const filterSearch = (sort: string) => {
-		query.sort = sort;
-
-		router.push({
-			pathname: router.pathname,
-			query: query,
-		});
-	};
-
-	const selectSortOption = (product: string) => {
-		filterSearch(product);
-	};
-
-	const openAndCloseSortingOptions = (e: any) => {
-		e.stopPropagation();
-		setOpenFilter(!openFilter);
-	};
-
-	const goToPage = (pageNumber: number) => {
-		const number = pageNumber;
-		query.page = number.toString();
-
-		router.push({
-			pathname: router.pathname,
-			query: query,
-		});
-	};
 
 	return (
 		<div className={styles.viewProductContainer}>
@@ -92,41 +50,7 @@ function viewAllCollection({ products, sortingOption, totalPages }: Props) {
 			</Head>
 			<div className={styles.headerLayout}>
 				<div className={styles.header}>Complete Collection</div>
-				<div className={styles.dropdownContainer}>
-					<button
-						className={`${styles.filterButton} ${
-							openFilter && styles.filterButtonWide
-						}`}
-						onClick={openAndCloseSortingOptions}
-					>
-						<span className={styles.filterSelection}>{selectedFilter}</span>
-						<span
-							className={`${styles.filterArrow} ${
-								openFilter && styles.filterOpen
-							}`}
-						>
-							<Image
-								src={arrow}
-								alt={'open/close filter'}
-								width={25}
-								height={25}
-							/>
-						</span>
-					</button>
-					<div
-						className={`${styles.dropdownMenu} ${openFilter && styles.visible}`}
-					>
-						{filterOptions.map((filter, index) => (
-							<button
-								key={index}
-								className={`${styles.filterSelection} ${styles.filterOptions}`}
-								onClick={() => selectSortOption(filter)}
-							>
-								{filter}
-							</button>
-						))}
-					</div>
-				</div>
+				<DropdownFilter selectedFilter={selectedFilter} />
 			</div>
 			<div className={styles.viewProductsLayout}>
 				{products.map((product, index) => (
@@ -135,20 +59,7 @@ function viewAllCollection({ products, sortingOption, totalPages }: Props) {
 					</div>
 				))}
 			</div>
-			<div className={styles.numberOfPages}>
-				{pages.map((pageNumber, index) => (
-					<button
-						className={`${styles.pageButton} ${
-							query.page === pageNumber.toString() && styles.pageSelectedActive
-						} `}
-						key={index}
-						disabled={query.page === pageNumber.toString() ? true : false}
-						onClick={() => goToPage(pageNumber)}
-					>
-						{pageNumber}
-					</button>
-				))}
-			</div>
+			<TotalPages pages={pages} />
 			<span className={styles.page}>Page</span>
 		</div>
 	);

@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase.config';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { addProducts, getAllProducts } from '../app/productsSlice';
 import NewArrivals from '../components/homePage/NewArrivals';
 import Head from 'next/head';
 
@@ -27,12 +25,6 @@ type Props = {
 };
 
 export default function Home({ products }: Props) {
-	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		dispatch(addProducts(products));
-	}, []);
-
 	return (
 		<div className={styles.container}>
 			<Head>

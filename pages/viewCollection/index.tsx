@@ -8,6 +8,7 @@ import Image from 'next/image';
 import arrow from '../../public/arrow.svg';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import DropdownFilter from '../../components/viewCollection/DropdownFilter';
 
 interface Product {
 	price: number;
@@ -30,42 +31,12 @@ function ViewCollection({ products, sortingOption }: Props) {
 	const { query } = router;
 
 	const selectedFilter = sortingOption;
-	const filterOptions = [
-		'Alphabetically, A-Z',
-		'Alphabetically, Z-A',
-		'Price, low to high',
-		'Price, high to low',
-	];
+
 	const [header, setHeader] = useState(query.productType);
-	const [openFilter, setOpenFilter] = useState<boolean>(false);
-
-	useEffect(() => {
-		const handler = () => setOpenFilter(false);
-
-		addEventListener('click', handler);
-	});
 
 	useEffect(() => {
 		setHeader(query.productType);
 	}, [query]);
-
-	const filterSearch = (sort: string) => {
-		query.sort = sort;
-
-		router.push({
-			pathname: router.pathname,
-			query: query,
-		});
-	};
-
-	const selectSortOption = (product: string) => {
-		filterSearch(product);
-	};
-
-	const openAndCloseSortingOptions = (e: any) => {
-		e.stopPropagation();
-		setOpenFilter(!openFilter);
-	};
 
 	return (
 		<div className={styles.viewProductContainer}>
@@ -74,41 +45,7 @@ function ViewCollection({ products, sortingOption }: Props) {
 			</Head>
 			<div className={styles.headerLayout}>
 				<div className={styles.header}>{header}</div>
-				<div className={styles.dropdownContainer}>
-					<button
-						className={`${styles.filterButton} ${
-							openFilter && styles.filterButtonWide
-						}`}
-						onClick={openAndCloseSortingOptions}
-					>
-						<span className={styles.filterSelection}>{selectedFilter}</span>
-						<span
-							className={`${styles.filterArrow} ${
-								openFilter && styles.filterOpen
-							}`}
-						>
-							<Image
-								src={arrow}
-								alt={'open/close filter'}
-								width={25}
-								height={25}
-							/>
-						</span>
-					</button>
-					<div
-						className={`${styles.dropdownMenu} ${openFilter && styles.visible}`}
-					>
-						{filterOptions.map((filter, index) => (
-							<button
-								key={index}
-								className={`${styles.filterSelection} ${styles.filterOptions}`}
-								onClick={() => selectSortOption(filter)}
-							>
-								{filter}
-							</button>
-						))}
-					</div>
-				</div>
+				<DropdownFilter selectedFilter={selectedFilter} />
 			</div>
 			<div className={styles.viewProductsLayout}>
 				{products.map((product, index) => (

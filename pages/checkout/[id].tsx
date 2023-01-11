@@ -33,13 +33,13 @@ interface productInformation {
 	imgUrl: string;
 }
 
-interface test {
+interface checkout {
 	itemsInCart: productInformation;
-	total: string;
+	total: number;
 }
 
 type Props = {
-	checkoutInformation: test;
+	checkoutInformation: checkout;
 };
 
 function index({ checkoutInformation }: Props) {
@@ -64,7 +64,6 @@ function index({ checkoutInformation }: Props) {
 
 	useEffect(() => {
 		dispatch(addCartFromLink(checkoutInformation.itemsInCart));
-		// @ts-ignore
 		setTotal(checkoutInformation.total);
 		// @ts-ignore
 		setItems(checkoutInformation.itemsInCart);

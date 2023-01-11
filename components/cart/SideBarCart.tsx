@@ -9,7 +9,7 @@ import { getCheckoutItems } from '../../app/checkoutSlice';
 
 interface productInformation {
 	productName: string;
-	imgUrl: string;
+	imgUrl: string[];
 }
 
 type Props = {

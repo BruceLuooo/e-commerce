@@ -84,12 +84,10 @@
 
 .addOrRemove{
   background-color: white;
-  border: 1px solid black;
-  transition: 0.2s;
+  border: 1px solid lightgrey;
 }
 .addOrRemove:hover{
-  background-color: black;
-  color: white;
+  border: 1px solid black;
 }
 
 .summary {

@@ -30,6 +30,7 @@ function DisplayProducts(product: props) {
 	const checkoutItems = useAppSelector(getCheckoutItems);
 
 	const [displayPopup, setDisplayPopup] = useState(false);
+
 	const buyNow = async (product: productInformation) => {
 		const item = {
 			price: product.price,
@@ -40,7 +41,10 @@ function DisplayProducts(product: props) {
 			imgUrl: product.imgUrl[0],
 		};
 		dispatch(addToCheckout(item));
+		goToCheckout(product);
+	};
 
+	const goToCheckout = async (product: productInformation) => {
 		let totalAmount = 0;
 		checkoutItems.forEach(item => (totalAmount += item.price! * item.quantity));
 		totalAmount += product.price!;

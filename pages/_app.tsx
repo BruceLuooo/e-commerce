@@ -29,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
 		window.addEventListener('resize', handleResize);
 	}, []);
+
 	return (
 		<Provider store={store}>
 			{useCompactNavbar ? <CompactNavbar /> : <Navbar />}

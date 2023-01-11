@@ -1,23 +1,16 @@
 import { getDocs, collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import Head from 'next/head';
-import Image from 'next/image';
 import { db } from '../../firebase.config';
 import styles from '../../styles/product/Product.module.css';
 import { useEffect, useState } from 'react';
-import OpenCloseArrow from '../../components/OpenCloseArrow';
 import SuggestedProducts from '../../components/SuggestedProducts';
 import SideBarCart from '../../components/cart/SideBarCart';
-import useFormatCurrency from '../../hooks/useFormatCurrency';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addToCheckout, getCheckoutItems } from '../../app/checkoutSlice';
 import { useRouter } from 'next/router';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import { Navigation, Pagination } from 'swiper';
 import { uuid } from 'uuidv4';
+import ImageCarousel from '../../components/product/ImageCarousel';
+import ProductInformation from '../../components/product/ProductInformation';
 
 interface Information {
 	params: {
@@ -36,18 +29,16 @@ interface Product {
 	brand: string;
 	productType: string;
 	id: string;
-	imgUrl: string;
+	imgUrl: string[];
 }
 
 export default function Product({ product }: Props) {
-	const { currencyFormatter } = useFormatCurrency();
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const checkoutItems = useAppSelector(getCheckoutItems);
 
 	const [quantity, setQuantity] = useState(1);
 	const [totalCost, setTotalCost] = useState(product.price);
-	const [descriptionPopup, setDescriptionPopup] = useState(false);
 	const [sideBarCart, setSideBarCart] = useState(false);
 
 	useEffect(() => {
@@ -65,17 +56,7 @@ export default function Product({ product }: Props) {
 		setSideBarCart(true);
 	};
 
-	const addItem = () => {
-		setQuantity(quantity + 1);
-	};
-	const removeItem = () => {
-		if (quantity === 1) {
-			return;
-		} else {
-			setQuantity(quantity - 1);
-		}
-	};
-	const addItemToCheckout = (quantity: number, product: Product, e: any) => {
+	const addItemToCheckout = (product: Product, e: any) => {
 		e.stopPropagation();
 		const item = {
 			price: product.price,
@@ -89,7 +70,7 @@ export default function Product({ product }: Props) {
 		setSideBarCart(true);
 		dispatch(addToCheckout(item));
 	};
-	const goToCheckout = async (quantity: number, product: Product) => {
+	const buyNow = async (product: Product) => {
 		const item = {
 			price: product.price,
 			productName: product.productName,
@@ -100,9 +81,13 @@ export default function Product({ product }: Props) {
 		};
 
 		dispatch(addToCheckout(item));
+		goToCheckout(product);
+	};
+
+	const goToCheckout = async (product: Product) => {
 		let totalAmount = 0;
 		checkoutItems.forEach(item => (totalAmount += item.price! * item.quantity));
-		totalAmount += product.price!;
+		totalAmount += product.price! * quantity;
 		const setId = uuid();
 		const data = {
 			itemsInCart: [
@@ -129,92 +114,14 @@ export default function Product({ product }: Props) {
 				<title>{`${product.productName} | Shop`}</title>
 			</Head>
 			<div className={styles.product}>
-				<Swiper
-					pagination={{
-						type: 'fraction',
-					}}
-					navigation={true}
-					loop={true}
-					modules={[Pagination, Navigation]}
-					className={styles.swiperContainer}
-				>
-					<SwiperSlide className={styles.productImage}>
-						<Image
-							src={product.imgUrl[0]}
-							alt='product Image'
-							className={styles.image}
-							width={550}
-							height={650}
-						/>
-					</SwiperSlide>
-					<SwiperSlide className={styles.productImage}>
-						<Image
-							src={product.imgUrl[1]}
-							alt='product Image'
-							className={styles.image}
-							width={550}
-							height={650}
-						/>
-					</SwiperSlide>
-				</Swiper>
-				<div className={styles.productInformation}>
-					<span className={styles.name}>{product.productName}</span>
-					<span className={styles.price}>
-						{currencyFormatter.format(product.price)}
-					</span>
-					<span className={styles.brand}>{product.brand}</span>
-					<hr className={styles.thinLine} />
-					<div className={styles.quantityContainer}>
-						<span>Quantity</span>
-						<div className={styles.quantityLayout}>
-							<button
-								className={`${styles.quantity} ${styles.addOrRemove}`}
-								onClick={removeItem}
-							>
-								-
-							</button>
-							<span className={`${styles.quantity} ${styles.number}`}>
-								{quantity}
-							</span>
-							<button
-								className={`${styles.quantity} ${styles.addOrRemove}`}
-								onClick={addItem}
-							>
-								+
-							</button>
-						</div>
-					</div>
-					<button
-						className={`${styles.button} ${styles.addToCart} `}
-						onClick={(e: any) => addItemToCheckout(quantity, product, e)}
-					>
-						Add To Cart
-					</button>
-					<button
-						className={`${styles.button} ${styles.buy} `}
-						onClick={() => goToCheckout(quantity, product)}
-					>
-						Buy It Now
-					</button>
-					<div className={styles.descriptionContainer}>
-						<div
-							className={styles.descriptionHeader}
-							onClick={() => setDescriptionPopup(!descriptionPopup)}
-						>
-							<span>Description</span>
-							<div className={styles.arrowIcon}>
-								<OpenCloseArrow popup={descriptionPopup} />
-							</div>
-						</div>
-						<span
-							className={`${styles.description} ${
-								descriptionPopup && styles.openDescription
-							}`}
-						>
-							{product.description}
-						</span>
-					</div>
-				</div>
+				<ImageCarousel image={product.imgUrl} />
+				<ProductInformation
+					product={product}
+					setQuantity={setQuantity}
+					quantity={quantity}
+					addItemToCheckout={addItemToCheckout}
+					buyNow={buyNow}
+				/>
 			</div>
 			<SuggestedProducts />
 			<div
