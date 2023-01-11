@@ -18,17 +18,24 @@ function PaymentInformation({ prevPage }: Props) {
 		updateMonthAndYear,
 		updateCardNumber,
 		updateNameAndPromo,
+		isFormCompletetd,
 	} = useHandlePaymentInfo();
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const { id } = router.query;
 
+	const [error, setError] = useState({ active: false, msg: '' });
+
 	const placeOrder = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		dispatch(clearState());
-		await deleteDoc(doc(db, 'userCheckoutCart', `${id}`));
-		router.push('/checkout/completed');
+		if (isFormCompletetd(paymentInfo)) {
+			return setError({ active: true, msg: 'Please Check Information' });
+		} else {
+			dispatch(clearState());
+			await deleteDoc(doc(db, 'userCheckoutCart', `${id}`));
+			router.push('/checkout/completed');
+		}
 	};
 
 	return (
@@ -110,6 +117,7 @@ function PaymentInformation({ prevPage }: Props) {
 					)}
 				</div>
 			</div>
+			{error && <div className={styles.error}>{error.msg}</div>}
 			<button type='submit' className={styles.button}>
 				Place Order
 			</button>

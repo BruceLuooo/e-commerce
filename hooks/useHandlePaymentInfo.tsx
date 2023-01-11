@@ -1,5 +1,13 @@
 import { useState } from 'react';
 
+interface Details {
+	promoCode: string;
+	nameOnCard: string;
+	cardNumber: string;
+	cvv: string;
+	monthAndYear: string;
+}
+
 export default function useHandlePaymentInfo() {
 	const [paymentInfo, setPaymentInfo] = useState({
 		promoCode: '',
@@ -70,11 +78,26 @@ export default function useHandlePaymentInfo() {
 		}
 	};
 
+	const isFormCompletetd = (depositDetails: Details) => {
+		return (
+			depositDetails.cardNumber.length < 19 ||
+			containsAnyLetters(depositDetails.cardNumber) ||
+			depositDetails.cvv.length < 3 ||
+			depositDetails.monthAndYear.length < 5
+		);
+	};
+
+	const containsAnyLetters = (detail: string) => {
+		return /[a-zA-Z]/.test(detail);
+	};
+
 	return {
 		paymentInfo,
 		updateCVV,
 		updateMonthAndYear,
 		updateCardNumber,
 		updateNameAndPromo,
+		containsAnyLetters,
+		isFormCompletetd,
 	};
 }

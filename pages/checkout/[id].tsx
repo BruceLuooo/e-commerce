@@ -11,6 +11,7 @@ import Head from 'next/head';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { addCartFromLink, addToCheckout } from '../../app/checkoutSlice';
+import { useRouter } from 'next/router';
 
 interface userInfo {
 	name: string;
@@ -44,6 +45,7 @@ type Props = {
 
 function index({ checkoutInformation }: Props) {
 	const { currencyFormatter } = useFormatCurrency();
+	const router = useRouter();
 
 	const dispatch = useAppDispatch();
 
@@ -63,10 +65,14 @@ function index({ checkoutInformation }: Props) {
 	const [nextPage, setNextPage] = useState(false);
 
 	useEffect(() => {
-		dispatch(addCartFromLink(checkoutInformation.itemsInCart));
-		setTotal(checkoutInformation.total);
-		// @ts-ignore
-		setItems(checkoutInformation.itemsInCart);
+		if (checkoutInformation === null) {
+			router.push('/');
+		} else {
+			dispatch(addCartFromLink(checkoutInformation.itemsInCart));
+			setTotal(checkoutInformation.total);
+			// @ts-ignore
+			setItems(checkoutInformation.itemsInCart);
+		}
 	}, []);
 
 	return (
@@ -145,7 +151,7 @@ export async function getServerSideProps(context: any) {
 
 	return {
 		props: {
-			checkoutInformation: docSnap.data(),
+			checkoutInformation: docSnap.data() || null,
 		},
 	};
 }
