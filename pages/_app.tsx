@@ -22,7 +22,6 @@ export default function App({ Component, pageProps }: AppProps) {
 		}
 
 		if (window.innerWidth < 1283) {
-			console.log('true');
 			setUseCompactNavbar(true);
 		} else {
 			setUseCompactNavbar(false);

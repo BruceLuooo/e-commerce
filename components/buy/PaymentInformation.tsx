@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import styles from '../../styles/buy/PaymentInformation.module.css';
 import useHandlePaymentInfo from '../../hooks/useHandlePaymentInfo';
+import { useRouter } from 'next/router';
+import { useAppDispatch } from '../../app/hooks';
+import { clearState } from '../../app/checkoutSlice';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { db } from '../../firebase.config';
 
 type Props = {
 	prevPage: Function;
@@ -15,8 +20,15 @@ function PaymentInformation({ prevPage }: Props) {
 		updateNameAndPromo,
 	} = useHandlePaymentInfo();
 
-	const placeOrder = (e: React.FormEvent<HTMLFormElement>) => {
+	const dispatch = useAppDispatch();
+	const router = useRouter();
+	const { id } = router.query;
+
+	const placeOrder = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		dispatch(clearState());
+		await deleteDoc(doc(db, 'userCheckoutCart', `${id}`));
+		router.push('/checkout/completed');
 	};
 
 	return (

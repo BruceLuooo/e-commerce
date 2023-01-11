@@ -44,8 +44,6 @@ type Props = {
 
 function index({ checkoutInformation }: Props) {
 	const { currencyFormatter } = useFormatCurrency();
-	const checkoutItems = useAppSelector(getCheckoutItems);
-	// console.log(checkoutItems);
 
 	const dispatch = useAppDispatch();
 
@@ -65,15 +63,11 @@ function index({ checkoutInformation }: Props) {
 	const [nextPage, setNextPage] = useState(false);
 
 	useEffect(() => {
-		const test = Cookies.get('cart');
-		if (!test) {
-			dispatch(addCartFromLink(checkoutInformation.itemsInCart));
-		} else {
-			// @ts-ignore
-			setTotal(checkoutInformation.total);
-			// @ts-ignore
-			setItems(checkoutInformation.itemsInCart);
-		}
+		dispatch(addCartFromLink(checkoutInformation.itemsInCart));
+		// @ts-ignore
+		setTotal(checkoutInformation.total);
+		// @ts-ignore
+		setItems(checkoutInformation.itemsInCart);
 	}, []);
 
 	return (

@@ -69,6 +69,12 @@ export const checkoutSlice = createSlice({
 				expires: inHalfADay,
 			});
 		},
+		clearState: state => {
+			Cookies.remove('cart', {
+				path: `/`,
+			});
+			state.cart = [];
+		},
 	},
 });
 
@@ -78,6 +84,7 @@ export const {
 	removeItem,
 	addToCheckout,
 	addCartFromLink,
+	clearState,
 } = checkoutSlice.actions;
 
 export const getCheckoutItems = (state: RootState) => state.checkout.cart;

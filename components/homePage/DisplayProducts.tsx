@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import styles from '../../styles/homePage/DisplayProducts.module.css';
 import Link from 'next/link';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
-import { useAppDispatch } from '../../app/hooks';
-import { addToCheckout } from '../../app/checkoutSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addToCheckout, getCheckoutItems } from '../../app/checkoutSlice';
 import { useRouter } from 'next/router';
+import { uuid } from 'uuidv4';
+import { setDoc, doc } from 'firebase/firestore';
+import { db } from '../../firebase.config';
 
 interface productInformation {
 	price?: number;
@@ -24,9 +27,10 @@ function DisplayProducts(product: props) {
 	const { currencyFormatter } = useFormatCurrency();
 	const router = useRouter();
 	const dispatch = useAppDispatch();
+	const checkoutItems = useAppSelector(getCheckoutItems);
 
 	const [displayPopup, setDisplayPopup] = useState(false);
-	const buyNow = (product: productInformation) => {
+	const buyNow = async (product: productInformation) => {
 		const item = {
 			price: product.price,
 			productName: product.productName,
@@ -36,7 +40,28 @@ function DisplayProducts(product: props) {
 			imgUrl: product.imgUrl[0],
 		};
 		dispatch(addToCheckout(item));
-		router.push('/buy');
+
+		let totalAmount = 0;
+		checkoutItems.forEach(item => (totalAmount += item.price! * item.quantity));
+		totalAmount += product.price!;
+		const setId = uuid();
+		const data = {
+			itemsInCart: [
+				...checkoutItems,
+				{
+					price: product.price,
+					productName: product.productName,
+					brand: product.brand,
+					quantity: 1,
+					id: product.id,
+					imgUrl: product.imgUrl[0],
+				},
+			],
+			total: totalAmount,
+		};
+		await setDoc(doc(db, 'userCheckoutCart', `${setId}`), data);
+
+		router.push(`/checkout/${setId}`);
 	};
 
 	return (

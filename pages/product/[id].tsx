@@ -1,4 +1,4 @@
-import { getDocs, collection, doc, getDoc } from 'firebase/firestore';
+import { getDocs, collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import Head from 'next/head';
 import Image from 'next/image';
 import { db } from '../../firebase.config';
@@ -8,8 +8,8 @@ import OpenCloseArrow from '../../components/OpenCloseArrow';
 import SuggestedProducts from '../../components/SuggestedProducts';
 import SideBarCart from '../../components/cart/SideBarCart';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
-import { useAppDispatch } from '../../app/hooks';
-import { addToCheckout } from '../../app/checkoutSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addToCheckout, getCheckoutItems } from '../../app/checkoutSlice';
 import { useRouter } from 'next/router';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -17,6 +17,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper';
+import { uuid } from 'uuidv4';
 
 interface Information {
 	params: {
@@ -41,7 +42,8 @@ interface Product {
 export default function Product({ product }: Props) {
 	const { currencyFormatter } = useFormatCurrency();
 	const dispatch = useAppDispatch();
-	const navigate = useRouter();
+	const router = useRouter();
+	const checkoutItems = useAppSelector(getCheckoutItems);
 
 	const [quantity, setQuantity] = useState(1);
 	const [totalCost, setTotalCost] = useState(product.price);
@@ -87,18 +89,38 @@ export default function Product({ product }: Props) {
 		setSideBarCart(true);
 		dispatch(addToCheckout(item));
 	};
-	const goToCheckout = (quantity: number, product: Product) => {
+	const goToCheckout = async (quantity: number, product: Product) => {
 		const item = {
 			price: product.price,
 			productName: product.productName,
 			brand: product.brand,
 			quantity: quantity,
 			id: product.id,
-			imgUrl: product.imgUrl,
+			imgUrl: product.imgUrl[0],
 		};
 
 		dispatch(addToCheckout(item));
-		navigate.push('/buy');
+		let totalAmount = 0;
+		checkoutItems.forEach(item => (totalAmount += item.price! * item.quantity));
+		totalAmount += product.price!;
+		const setId = uuid();
+		const data = {
+			itemsInCart: [
+				...checkoutItems,
+				{
+					price: product.price,
+					productName: product.productName,
+					brand: product.brand,
+					quantity: quantity,
+					id: product.id,
+					imgUrl: product.imgUrl[0],
+				},
+			],
+			total: totalAmount,
+		};
+		await setDoc(doc(db, 'userCheckoutCart', `${setId}`), data);
+
+		router.push(`/checkout/${setId}`);
 	};
 
 	return (
