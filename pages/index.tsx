@@ -24,7 +24,7 @@ type Props = {
 	products: productInformation[];
 };
 
-export default function Home({ products }: Props) {
+export default function Home({ products }: any) {
 	return (
 		<div className={styles.container}>
 			<Head>

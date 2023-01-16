@@ -6,8 +6,8 @@
 }
 
 .open{
-  transform: rotate(180deg);
+  transform: rotate(0deg);
 }
 .close{
-  transform: rotate(0);
+  transform: rotate(180deg);
 }

@@ -84,15 +84,16 @@
 .filterArrow {
   position: absolute;
   right: 5px;
-  top: -4px;
-  transform: rotate(0deg);
+  top: -6px;
+  transform: rotate(180deg);
   transform-origin: center;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .filterOpen {
-  transform: rotate(180deg);
-  top: -6px;
+  transform: rotate(0deg);
+  top: -4px;
   transition: 0.3s;
 }
 
