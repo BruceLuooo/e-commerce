@@ -1,0 +1,32 @@
+// Search Results
+
+const searchResults = [
+	{
+		brand: 'tommy',
+		id: 'adsfar',
+		imgUrl: doc.data().imgUrl[0],
+		productName: 'tommy chair',
+	},
+	{
+		brand: 'tommy',
+		id: 'fadsf',
+		imgUrl: doc.data().imgUrl[0],
+		productName: 'tommy sofa',
+	},
+];
+
+//Search No Results Found
+
+const querySnapShot = [];
+
+//Mock Data for Item Page
+
+const productInfo = {
+	description: 'This is a really comfy sofa',
+	price: 300,
+	productName: 'Nike Sofa',
+	brand: 'Nike',
+	productType: 'sofa',
+	id: 'asfkjl',
+	imgUrl: 'www.image.com',
+};
